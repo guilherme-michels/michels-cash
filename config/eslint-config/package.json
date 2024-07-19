@@ -1,0 +1,22 @@
+{
+  "name": "@mcash/eslint-config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "library.js",
+    "react.js",
+    "node.js"
+  ],
+  "devDependencies": {
+    "@mcash/prettier": "workspace:*",
+    "@rocketseat/eslint-config": "^2.2.2",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-simple-import-sort": "^12.0.0"
+  },
+  "prettier": "@mcash/prettier",
+  "eslintConfig": {
+    "extends": [
+      "./library.js"
+    ]
+  }
+}

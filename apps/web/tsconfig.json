@@ -1,0 +1,15 @@
+{
+  "extends": "@mcash/tsconfig/react.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@api": ["src/index.tsx"],
+      "@ui-components": ["src/components/ui"],
+      "@header-components": ["src/components/header"],
+      "@page-header-components": ["src/components/page-header/page-header"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}

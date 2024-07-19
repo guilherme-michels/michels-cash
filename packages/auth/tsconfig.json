@@ -1,0 +1,4 @@
+{
+  "extends": "@mcash/tsconfig/library.json",
+  "include": ["src/**/*"]
+}

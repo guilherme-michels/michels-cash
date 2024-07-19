@@ -1,0 +1,42 @@
+{
+  "name": "@mcash/api",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "tsx watch src/http/server.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:studio": "prisma studio"
+  },
+  "dependencies": {
+    "@mcash/auth": "workspace:*",
+    "@fastify/cors": "^9.0.1",
+    "@fastify/jwt": "^8.0.1",
+    "@fastify/swagger": "^8.14.0",
+    "@fastify/swagger-ui": "^3.0.0",
+    "@prisma/client": "5.15.0",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "fastify": "^4.26.2",
+    "fastify-plugin": "^4.5.1",
+    "fastify-type-provider-zod": "^1.1.9",
+    "zod": "^3.23.4"
+  },
+  "devDependencies": {
+    "@mcash/eslint-config": "workspace:*",
+    "@mcash/prettier": "workspace:*",
+    "@mcash/tsconfig": "workspace:*",
+    "@faker-js/faker": "^8.4.1",
+    "@types/bcryptjs": "^2.4.6",
+    "@types/node": "^20.12.7",
+    "prisma": "^5.15.0",
+    "tsx": "^4.7.3"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "eslintConfig": {
+    "extends": [
+      "@mcash/eslint-config/node"
+    ]
+  },
+  "prettier": "@mcash/prettier"
+}
