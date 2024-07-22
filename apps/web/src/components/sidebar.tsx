@@ -1,119 +1,121 @@
 import {
-  BarChart3,
-  Box,
-  Calendar,
-  DollarSign,
+  AreaChart,
+  ArrowRightLeft,
+  BookOpenCheck,
   Home,
+  LineChart,
+  type LucideIcon,
   Settings,
-  Users,
+  Wallet,
 } from 'lucide-react'
-import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from './ui/tooltip'
+import { cn } from '../lib/utils'
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip'
 
-interface MenuItem {
-  name: string
-  icon: keyof typeof icons
-  link: string
+type SidebarItemProps = {
+  title: string
+  Icon: LucideIcon
+  path: string
+  currentPath: string
 }
 
-const icons = {
-  Home: <Home className="h-5 w-5" />,
-  Patient: <Users className="h-5 w-5" />,
-  Calendar: <Calendar className="h-5 w-5" />,
-  Stock: <Box className="h-5 w-5" />,
-  Financial: <DollarSign className="h-5 w-5" />,
-  Settings: <Settings className="h-5 w-5" />,
-  Dashboard: <BarChart3 className="h-5 w-5" />,
-}
-
-const TooltipItem: React.FC<MenuItem> = ({ name, icon, link }) => {
-  const location = useLocation()
-  const isActive = location.pathname === link
-
+function SidebarItem({ title, Icon, path, currentPath }: SidebarItemProps) {
   return (
-    <TooltipProvider>
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <Link
-            to={link}
-            className={`flex h-9 w-9 items-center justify-center rounded-lg  transition-all hover:bg-[#6d5544] ${
-              isActive
-                ? 'bg-zinc-50 text-black hover:bg-zinc-300'
-                : 'text-zinc-300 hover:text-white'
-            }`}
-          >
-            {icons[icon]}
-            <span className="sr-only">{name}</span>
-          </Link>
-        </TooltipTrigger>
-        <TooltipContent side="right">{name}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <Link
+          to={path}
+          className={cn(
+            'group flex w-full justify-start gap-4 rounded-lg p-1 text-muted-foreground transition-colors',
+            currentPath === path &&
+              'bg-zinc-100 text-foreground  dark:bg-opacity-5'
+          )}
+        >
+          <Icon
+            className={cn(
+              'h-5 w-5 text-emerald-700 transition-all group-hover:scale-110'
+            )}
+          />
+
+          <span className="text-sm transition-all group-hover:scale-110 group-hover:text-foreground">
+            {title}
+          </span>
+        </Link>
+      </TooltipTrigger>
+      <TooltipContent side="right">{title}</TooltipContent>
+    </Tooltip>
   )
 }
 
-export const Sidebar: React.FC = () => {
-  const menuItems: MenuItem[] = [
-    {
-      name: 'Página inicial',
-      icon: 'Home',
-      link: '/home',
-    },
-    {
-      name: 'Agenda',
-      icon: 'Calendar',
-      link: '/calendar',
-    },
-    {
-      name: 'Pacientes',
-      icon: 'Patient',
-      link: '/patients',
-    },
-    {
-      name: 'Estoque',
-      icon: 'Stock',
-      link: '/stock',
-    },
-    {
-      name: 'Financeiro',
-      icon: 'Financial',
-      link: '/financial',
-    },
-    {
-      name: 'Dashboard',
-      icon: 'Dashboard',
-      link: '/dashboard',
-    },
-    {
-      name: 'Configurações',
-      icon: 'Settings',
-      link: '/settings',
-    },
-  ]
+type DesktopSidebarProps = {
+  isSidebarOpened: boolean
+}
+
+export function DesktopSidebar({ isSidebarOpened }: DesktopSidebarProps) {
+  const location = useLocation()
 
   return (
-    <aside className="fixed inset-y-0 left-0 z-10 flex w-16 flex-col border-r bg-[#574436]">
+    <aside
+      className={cn(
+        'transition-width fixed inset-y-0 left-0 z-10 mt-12 flex flex-col border-r bg-background duration-300 ease-in-out',
+        isSidebarOpened ? 'w-48' : 'w-48 -translate-x-full duration-500'
+      )}
+    >
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
-          to="/home"
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white font-bold text-[#574436] transition-all hover:bg-opacity-85"
+          to="/"
+          className={cn(
+            'flex w-full items-center gap-2 rounded bg-emerald-700 px-1 py-2 text-lg font-semibold text-primary-foreground transition-all hover:bg-emerald-700/90'
+          )}
         >
-          CB
+          <Home className="h-5 w-5 transition-all" />
+          <span className="text-sm transition-all">Página inicial</span>
         </Link>
-        {menuItems.slice(0, -1).map((item) => (
-          <TooltipItem key={item.name} {...item} />
-        ))}
+
+        <SidebarItem
+          title="Minha conta"
+          Icon={Wallet}
+          path="/my-account"
+          currentPath={location.pathname}
+        />
+
+        <SidebarItem
+          title="Investimentos"
+          Icon={LineChart}
+          path="/investments"
+          currentPath={location.pathname}
+        />
+
+        <SidebarItem
+          title="Transferências"
+          Icon={ArrowRightLeft}
+          path="/transactions"
+          currentPath={location.pathname}
+        />
+
+        <SidebarItem
+          title="Educação"
+          Icon={BookOpenCheck}
+          path="/financial-education"
+          currentPath={location.pathname}
+        />
+
+        <SidebarItem
+          title="Dashboard"
+          Icon={AreaChart}
+          path="/dashboard"
+          currentPath={location.pathname}
+        />
       </nav>
 
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-        <TooltipItem {...menuItems[menuItems.length - 1]} />
+        <SidebarItem
+          title="Configurações"
+          Icon={Settings}
+          path="/settings"
+          currentPath={location.pathname}
+        />
       </nav>
     </aside>
   )

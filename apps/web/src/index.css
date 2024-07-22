@@ -79,6 +79,11 @@ html,
 body,
 #root {
   height: 100%;
+  width: 100%;
+}
+
+main {
+  scrollbar-gutter: stable;
 }
 
 html,

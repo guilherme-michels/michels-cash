@@ -1,18 +1,26 @@
-import { PropsWithChildren } from 'react'
+import { PropsWithChildren, useState } from 'react'
 
-import { Header } from '../components/header/header'
-import { Sidebar } from '../components/sidebar'
+import { Header } from '@/components/header'
+
+import { DesktopSidebar } from '../components/sidebar'
 
 export function SidebarTemplate({ children }: PropsWithChildren<unknown>) {
+  const [isSidebarOpened, setIsSidebarOpened] = useState(true)
+  const toggleDesktopSidebar = () => setIsSidebarOpened((prev) => !prev)
+
   return (
     <div className="flex size-full">
-      <Sidebar />
-      <div className="ml-14 flex size-full min-h-[100vh] flex-col">
-        <Header />
+      <DesktopSidebar isSidebarOpened={isSidebarOpened} />
+      <div className="flex size-full min-h-[100vh] flex-col">
+        <Header onToggleDesktopSidebar={toggleDesktopSidebar} />
 
-        <div className="size-full flex-grow transform overflow-y-auto bg-[#D1CDCB]">
+        <main
+          className={`h-min-[100vh] flex h-auto flex-1 flex-col bg-gradient-to-tr from-slate-50 via-slate-50 to-emerald-700/50 pt-4 transition-all duration-500 ${
+            isSidebarOpened ? 'pl-52' : ''
+          } overflow-y-auto`}
+        >
           {children}
-        </div>
+        </main>
       </div>
     </div>
   )

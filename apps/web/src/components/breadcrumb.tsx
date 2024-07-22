@@ -1,20 +1,21 @@
-import React from "react";
+import React from 'react'
+
 import {
-  BreadcrumbShad,
   BreadcrumbItem,
   BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "./ui/breadcrumb";
+  BreadcrumbShad,
+} from './ui/breadcrumb'
 
 interface BreadcrumbOption {
-  name: string;
-  link: string;
+  name: string
+  link: string
 }
 
 interface BreadcrumbProps {
-  options: BreadcrumbOption[];
+  options: BreadcrumbOption[]
 }
 
 export function Breadcrumb({ options }: BreadcrumbProps) {
@@ -37,5 +38,5 @@ export function Breadcrumb({ options }: BreadcrumbProps) {
         ))}
       </BreadcrumbList>
     </BreadcrumbShad>
-  );
+  )
 }

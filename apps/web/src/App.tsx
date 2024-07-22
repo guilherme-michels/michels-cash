@@ -6,6 +6,7 @@ import ptBr from 'dayjs/locale/pt-br'
 import { BrowserRouter } from 'react-router-dom'
 
 import { Toaster } from './components/ui/toaster'
+import { TooltipProvider } from './components/ui/tooltip'
 import { queryClient } from './lib/react-query'
 import { Routes } from './routes'
 
@@ -18,8 +19,10 @@ export function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <Routes />
-        <Toaster />
+        <TooltipProvider>
+          <Routes />
+          <Toaster />
+        </TooltipProvider>
       </QueryClientProvider>
     </BrowserRouter>
   )

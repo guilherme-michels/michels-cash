@@ -4,10 +4,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@api": ["src/index.tsx"],
-      "@ui-components": ["src/components/ui"],
-      "@header-components": ["src/components/header"],
-      "@page-header-components": ["src/components/page-header/page-header"]
+      "@interfaces/*": ["./src/interfaces/*"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

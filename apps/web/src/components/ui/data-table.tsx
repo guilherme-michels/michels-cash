@@ -1,16 +1,18 @@
-import { useState } from "react";
 import {
   ColumnDef,
   ColumnFiltersState,
-  SortingState,
-  VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  SortingState,
   useReactTable,
-} from "@tanstack/react-table";
+  VisibilityState,
+} from '@tanstack/react-table'
+import { useState } from 'react'
+
+import { Button } from './button'
 import {
   Table,
   TableBody,
@@ -18,21 +20,20 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "./table";
-import { Button } from "./button";
+} from './table'
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
-  data: TData[];
-  canFilterColumns?: boolean;
-  isPaginated?: boolean;
-  isSearchable?: boolean;
-  dateFilter?: boolean;
-  columnToSearch?: string;
-  pageIndex?: number;
-  totalPages?: number | null;
-  onPageChange?: (pageIndex: number) => void;
-  getRowProps?: (row: TData) => React.HTMLAttributes<HTMLTableRowElement>;
+  columns: ColumnDef<TData, TValue>[]
+  data: TData[]
+  canFilterColumns?: boolean
+  isPaginated?: boolean
+  isSearchable?: boolean
+  dateFilter?: boolean
+  columnToSearch?: string
+  pageIndex?: number
+  totalPages?: number | null
+  onPageChange?: (pageIndex: number) => void
+  getRowProps?: (row: TData) => React.HTMLAttributes<HTMLTableRowElement>
 }
 
 export function DataTable<TData, TValue>({
@@ -46,9 +47,9 @@ export function DataTable<TData, TValue>({
   onPageChange,
   getRowProps = () => ({}),
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({})
 
   const table = useReactTable({
     data,
@@ -65,46 +66,28 @@ export function DataTable<TData, TValue>({
       columnFilters,
       columnVisibility,
     },
-  });
+  })
 
   const handlePreviousPage = () => {
-    if (onPageChange && typeof onPageChange === "function") {
-      const previousPageIndex = pageIndex! - 1;
+    if (onPageChange && typeof onPageChange === 'function') {
+      const previousPageIndex = pageIndex! - 1
       if (previousPageIndex >= 1) {
-        onPageChange(previousPageIndex);
+        onPageChange(previousPageIndex)
       }
     }
-  };
+  }
 
   const handleNextPage = () => {
-    if (onPageChange && typeof onPageChange === "function") {
-      const nextPageIndex = pageIndex! + 1;
+    if (onPageChange && typeof onPageChange === 'function') {
+      const nextPageIndex = pageIndex! + 1
       if (nextPageIndex <= totalPages!) {
-        onPageChange(nextPageIndex);
+        onPageChange(nextPageIndex)
       }
     }
-  };
+  }
 
   return (
     <div className="rounded-md border bg-white">
-      <div className="flex items-center w-full justify-between">
-        {/* <div className="mt-4 ml-4 w-full mb-4">
-          <Input
-            placeholder={`Buscar...`}
-            value={
-              (table.getColumn(columnToSearch)?.getFilterValue() as string) ??
-              ""
-            }
-            onChange={(event) =>
-              table
-                .getColumn(columnToSearch)
-                ?.setFilterValue(event.target.value)
-            }
-            className="max-w-sm bg-zinc-100"
-            disabled={!isSearchable}
-          />
-        </div> */}
-      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -119,7 +102,7 @@ export function DataTable<TData, TValue>({
                           header.getContext()
                         )}
                   </TableHead>
-                );
+                )
               })}
             </TableRow>
           ))}
@@ -129,17 +112,17 @@ export function DataTable<TData, TValue>({
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && "selected"}
+                data-state={row.getIsSelected() && 'selected'}
                 {...getRowProps(row.original)}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell
                     key={cell.id}
                     className={`${
-                      cell.column.id === "actions" ||
-                      cell.column.id === "patientImg"
-                        ? "w-12"
-                        : ""
+                      cell.column.id === 'actions' ||
+                      cell.column.id === 'patientImg'
+                        ? 'w-12'
+                        : ''
                     }`}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -157,10 +140,9 @@ export function DataTable<TData, TValue>({
         </TableBody>
       </Table>
       {isPaginated && (
-        <div className="flex items-center justify-between space-x-2 py-4 bg-white">
-          <span className="text-sm pl-4 text-zinc-600">
-            Página {pageIndex ? pageIndex : "1"} de{" "}
-            {totalPages ? totalPages : "1"}
+        <div className="flex items-center justify-between space-x-2 bg-white py-4">
+          <span className="pl-4 text-sm text-zinc-600">
+            Página {pageIndex || '1'} de {totalPages || '1'}
           </span>
           <div>
             <Button
@@ -185,5 +167,5 @@ export function DataTable<TData, TValue>({
         </div>
       )}
     </div>
-  );
+  )
 }
