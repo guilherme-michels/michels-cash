@@ -9,7 +9,7 @@ export function Investment() {
   >(null)
 
   return (
-    <div className="grid size-full grid-cols-5 gap-4">
+    <div className="grid-cols3 grid size-full gap-4 lg:grid-cols-5">
       <InvestmentTypesTotalizerCard
         onSelectInvestmentType={(value) => setInvestmentTypeSelected(value)}
       />

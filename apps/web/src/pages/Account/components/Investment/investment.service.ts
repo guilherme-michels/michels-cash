@@ -1,6 +1,6 @@
 import { PageOptions } from '@interfaces/PageOptions'
 
-import { InvestmentData } from './investmentSchema'
+import { InvestmentData } from './schemas/investmentSchema'
 
 export function getFakeInvestments(name: string): Promise<{
   message: string

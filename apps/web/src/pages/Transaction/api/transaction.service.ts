@@ -2,18 +2,18 @@ import { PageOptions } from '@interfaces/PageOptions'
 
 import { TransactionData } from '@/pages/Transaction/schemas/transactionSchema'
 
-export function getFakeDeposits(): Promise<{
+export function getFakeTransactions(): Promise<{
   message: string
-  deposits: TransactionData[]
+  transaction: TransactionData[]
   pageOptions: PageOptions
 }> {
-  const deposits = [{ id: '1', name: 'Particular' }]
+  const transaction = [{ id: '1', name: 'Particular' }]
 
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve({
         message: 'sucesso',
-        deposits,
+        transaction,
         pageOptions: {
           lastPage: 1,
           page: 1,

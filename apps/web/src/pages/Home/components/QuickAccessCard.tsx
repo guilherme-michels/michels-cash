@@ -21,7 +21,7 @@ export function QuickAccessCard({
   url,
 }: QuickAccessCardProps) {
   return (
-    <Card className="flex-1 border-[1px] border-emerald-700 bg-transparent ">
+    <Card className="flex-1 border-[1px] border-emerald-700 bg-transparent">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>

@@ -1,3 +1,9 @@
+import { WithdrawTable } from './components/WithdrawTable'
+
 export function Withdraw() {
-  return <div>a</div>
+  return (
+    <div>
+      <WithdrawTable />
+    </div>
+  )
 }

@@ -48,8 +48,8 @@ export function FormDatePicker<T extends FieldValues>({
                 <Button
                   variant={'outline'}
                   className={cn(
-                    'justify-start text-left font-normal',
-                    !selectedDate && 'text-muted-foreground'
+                    'justify-start border-zinc-300 text-left font-normal',
+                    !selectedDate && 'text-black'
                   )}
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />

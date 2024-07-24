@@ -26,7 +26,7 @@ export function Account() {
         <Breadcrumb options={options} />
 
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <AccountHeaderCard
               icon={<CircleDollarSign color="#19850b" />}
               description="Conta corrente"

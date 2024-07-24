@@ -1,24 +1,22 @@
 import { Breadcrumb } from '@/components/breadcrumb'
 import { SidebarTemplate } from '@/template/SidebarTemplate'
 
-import { InvestmentFilter } from './components/InvestmentFilter'
-import { Investments } from './components/Investments'
-
-export function Investment() {
+export function FinancialEducationPost() {
   const options = [
     { name: 'Página inicial', link: '/home' },
-    { name: 'Investimentos', link: '/investments' },
+    { name: 'Educação financeira', link: '/financial-education' },
+    {
+      name: '',
+      link: 'Estratégia de investimentos: aprenda o que é, os tipos e como montar',
+    },
   ]
+
   return (
     <SidebarTemplate>
       <div className="p-4">
         <Breadcrumb options={options} />
 
-        <div className="flex flex-col gap-4">
-          <InvestmentFilter />
-
-          <Investments />
-        </div>
+        <div className="flex flex-col gap-4"></div>
       </div>
     </SidebarTemplate>
   )

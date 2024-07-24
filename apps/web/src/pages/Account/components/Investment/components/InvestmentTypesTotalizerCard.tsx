@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   Cell,
   Pie,
@@ -46,16 +47,25 @@ export function InvestmentTypesTotalizerCard({
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const data: DataEntry[] = [
     { name: 'LCA', value: 33 },
-    { name: 'LCI', value: 67 },
+    { name: 'LCI', value: 47 },
+    { name: 'CDB', value: 20 },
   ]
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']
   const HOVER_COLORS = ['#005F9E', '#007A6E', '#CC8A00', '#CC5A00']
 
   return (
-    <Card className="col-span-2 flex-1">
+    <Card className=" col-span-3 flex-1 lg:col-span-2">
       <CardHeader>
-        <CardTitle>Investimentos</CardTitle>
-        <CardDescription></CardDescription>
+        <CardTitle className="flex items-center justify-between">
+          Investimentos
+          <Link
+            to="/investments"
+            className="text-sm transition-all hover:text-zinc-700"
+          >
+            Ver mais
+          </Link>
+        </CardTitle>
+        <CardDescription>Totalizador de investimentos</CardDescription>
       </CardHeader>
       <CardContent className="flex items-center justify-center space-x-4">
         <div className="flex size-full flex-col">

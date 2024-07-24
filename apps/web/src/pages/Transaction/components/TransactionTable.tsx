@@ -6,30 +6,30 @@ import { useSearchParams } from 'react-router-dom'
 import { DataTable } from '@/components/ui/data-table'
 import { TransactionData } from '@/pages/Transaction/schemas/transactionSchema'
 
-import { getFakeDeposits } from '../deposit.service'
+import { getFakeTransactions } from '../api/transaction.service'
 
-export function DepositTable() {
+export function TransactionTable() {
   const [searchParams, setSearchParams] = useSearchParams()
-  const [selectedDeposit, setSelectedDeposit] =
+  const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionData | null>(null)
   const [totalPages, setTotalPages] = useState<number | null>(1)
   const [pageIndex, setPageIndex] = useState<number>(1)
 
-  const { data: depositData, refetch } = useQuery({
+  const { data: transactionData, refetch } = useQuery({
     queryKey: [
-      'deposit',
+      'transaction',
       { page: Number(searchParams.get('page')) || 1, limit: 10 },
     ],
-    queryFn: () => getFakeDeposits(),
+    queryFn: () => getFakeTransactions(),
   })
 
   useEffect(() => {
-    if (depositData) {
-      setTotalPages(depositData.pageOptions.lastPage!)
+    if (transactionData) {
+      setTotalPages(transactionData.pageOptions.lastPage!)
       const page = Number(searchParams.get('page')) || 1
       setPageIndex(page)
     }
-  }, [depositData, searchParams])
+  }, [transactionData, searchParams])
 
   const handlePageChange = (newPageIndex: number) => {
     const params = new URLSearchParams(searchParams)
@@ -78,7 +78,7 @@ export function DepositTable() {
   return (
     <DataTable
       columns={columns}
-      data={depositData?.deposits || []}
+      data={transactionData?.transaction || []}
       dateFilter={false}
       pageIndex={pageIndex}
       totalPages={totalPages}
