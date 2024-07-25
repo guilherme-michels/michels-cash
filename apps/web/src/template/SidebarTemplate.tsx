@@ -15,7 +15,7 @@ export function SidebarTemplate({ children }: PropsWithChildren<unknown>) {
         <Header onToggleDesktopSidebar={toggleDesktopSidebar} />
 
         <main
-          className={`h-min-[100vh] flex h-auto flex-1 flex-col bg-gradient-to-tr from-slate-50 via-slate-50 to-emerald-700/50 pt-4 transition-all duration-500 ${
+          className={`h-min-[100vh] flex h-auto flex-1 flex-col  pt-4 transition-all duration-500 ${
             isSidebarOpened ? 'pl-52' : ''
           } overflow-y-auto`}
         >

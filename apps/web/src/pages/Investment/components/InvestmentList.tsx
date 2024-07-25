@@ -20,12 +20,13 @@ interface InvestmentListProps {
 
 export function InvestmentList({ title, investments }: InvestmentListProps) {
   return (
-    <div className="p-4">
-      <h2 className="mb-4 text-xl font-bold">{title}</h2>
+    <div className="w-full pt-2">
+      <h2 className="mb-2 px-4 text-xl font-bold">{title}</h2>
+
       <Carousel className="flex gap-4">
         <CarouselContent>
           {investments.map((investment, index) => (
-            <CarouselItem key={index} className="md:basis-1/3 xl:basis-1/5">
+            <CarouselItem key={index} className="md:basis-1/3 xl:basis-1/5 ">
               <InvestmentCard
                 name={investment.name}
                 details={investment.details}

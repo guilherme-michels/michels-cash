@@ -12,6 +12,7 @@ export function TransactionTable() {
   const [searchParams, setSearchParams] = useSearchParams()
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionData | null>(null)
+
   const [totalPages, setTotalPages] = useState<number | null>(1)
   const [pageIndex, setPageIndex] = useState<number>(1)
 

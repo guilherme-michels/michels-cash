@@ -1,52 +1,59 @@
 import type { PropsWithChildren } from 'react'
-import React, { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+
+// import { HttpError } from '@/utils/http'
 
 interface Auth {
   isAuthenticated: boolean
 }
+interface User {
+  id: number
+  email: string
+  name: string
+}
 
 interface signInResponse {
   token: string
+  // user: User
 }
 
 interface AuthContextProps {
   auth: Auth
-  login: (loginResponse: signInResponse) => void
-  logout: () => void
+  user: User | null | undefined
+  signIn: (loginResponse: signInResponse) => void
+  signOut: () => void
 }
 
 const TOKEN = 'CBtoken'
-const AuthContext = createContext<AuthContextProps>({
-  auth: { isAuthenticated: false },
-  login: () => {},
-  logout: () => {},
-})
+const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
-export const AuthProvider: React.FC<PropsWithChildren<unknown>> = ({
-  children,
-}) => {
+export function AuthProvider({ children }: PropsWithChildren<unknown>) {
+  const [user, setUser] = useState<User | null | undefined>()
+  // const [error, setError] = useState<HttpError>()
+
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => !(localStorage.getItem(TOKEN) == null)
   )
   const navigate = useNavigate()
 
-  const logout = (): void => {
+  const signOut = (): void => {
     localStorage.removeItem(TOKEN)
     setIsAuthenticated(false)
+    setUser(null)
     navigate('/')
   }
 
-  const login = (loginResponse: signInResponse): void => {
+  const signIn = (loginResponse: signInResponse): void => {
     localStorage.setItem(TOKEN, loginResponse.token)
-
+    // setUser(loginResponse.user)
     setIsAuthenticated(true)
   }
 
   const auth: Auth = { isAuthenticated }
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout }}>
+    <AuthContext.Provider value={{ auth, signIn, signOut, user }}>
       {children}
     </AuthContext.Provider>
   )

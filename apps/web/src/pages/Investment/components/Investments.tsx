@@ -39,17 +39,12 @@ const investmentsData: { [key: string]: { name: string; details: string }[] } =
       { name: 'Investment 1', details: 'Details about investment 1' },
       { name: 'Investment 2', details: 'Details about investment 2' },
       { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
     ],
   }
 
 export function Investments() {
   return (
-    <div className="mb-20 max-h-[70vh] overflow-y-auto overflow-x-hidden">
+    <div className="flex max-h-[70vh] flex-col gap-8 overflow-y-auto overflow-x-hidden">
       {Object.keys(investmentsData).map((key) => (
         <InvestmentList
           key={key}

@@ -21,6 +21,8 @@ type SidebarItemProps = {
 }
 
 function SidebarItem({ title, Icon, path, currentPath }: SidebarItemProps) {
+  const isActive = currentPath.startsWith(path)
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -28,8 +30,7 @@ function SidebarItem({ title, Icon, path, currentPath }: SidebarItemProps) {
           to={path}
           className={cn(
             'group flex w-full justify-start gap-4 rounded-lg p-1 text-muted-foreground transition-colors',
-            currentPath === path &&
-              'bg-zinc-100 text-foreground  dark:bg-opacity-5'
+            isActive && 'bg-zinc-100 text-foreground dark:bg-opacity-5'
           )}
         >
           <Icon

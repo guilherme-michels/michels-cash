@@ -16,10 +16,10 @@ export function SignInPage() {
   })
 
   const { toast } = useToast()
-  const { login } = useAuth()
+  const { signIn } = useAuth()
   const queryClient = useQueryClient()
 
-  const { mutateAsync: signIn } = useMutation({
+  const { mutateAsync: login } = useMutation({
     mutationFn: async (data: SignInData) => {
       return SignIn(data)
     },
@@ -30,8 +30,8 @@ export function SignInPage() {
 
   const onSubmit = async (data: SignInData): Promise<void> => {
     try {
-      const token = await signIn(data)
-      login(token)
+      const token = await login(data)
+      signIn(token)
 
       reset()
     } catch (err: any) {

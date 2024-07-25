@@ -6,8 +6,8 @@ export function FinancialEducationPost() {
     { name: 'Página inicial', link: '/home' },
     { name: 'Educação financeira', link: '/financial-education' },
     {
-      name: '',
-      link: 'Estratégia de investimentos: aprenda o que é, os tipos e como montar',
+      name: 'Estratégia de investimentos: aprenda o que é, os tipos e como montar',
+      link: '',
     },
   ]
 

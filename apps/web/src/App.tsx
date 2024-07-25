@@ -7,6 +7,7 @@ import { BrowserRouter } from 'react-router-dom'
 
 import { Toaster } from './components/ui/toaster'
 import { TooltipProvider } from './components/ui/tooltip'
+import { AuthProvider } from './context/AuthContext'
 import { queryClient } from './lib/react-query'
 import { Routes } from './routes'
 
@@ -19,10 +20,12 @@ export function App() {
   return (
     <BrowserRouter>
       <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Routes />
-          <Toaster />
-        </TooltipProvider>
+        <AuthProvider>
+          <TooltipProvider>
+            <Routes />
+            <Toaster />
+          </TooltipProvider>
+        </AuthProvider>
       </QueryClientProvider>
     </BrowserRouter>
   )
