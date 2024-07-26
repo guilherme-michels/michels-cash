@@ -28,7 +28,7 @@ export function AccountHeaderCard({
     <Card
       onClick={onSelect}
       className={cn('flex-1 cursor-pointer border-[1px] transition-all', {
-        'border-emerald-800 shadow-lg shadow-emerald-200': selected,
+        'border-emerald-700 ': selected,
       })}
     >
       <CardHeader>

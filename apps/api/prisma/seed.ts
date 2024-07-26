@@ -1,38 +1,38 @@
-// import { faker } from '@faker-js/faker'
+import { faker } from '@faker-js/faker'
 import { PrismaClient } from '@prisma/client'
-// import { hash } from 'bcryptjs'
+import { hash } from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
 async function seed() {
   await prisma.user.deleteMany()
 
-  // const user = await prisma.user.create({
-  //   data: {
-  //     name: 'Guilherme Michels',
-  //     email: 'guilherme@gmail.com',
-  //     avatarUrl: 'https://github.com/guilherme-michels.png',
-  //     passwordHash: await hash('123456', 1),
-  //   },
-  // })
+  await prisma.user.create({
+    data: {
+      name: 'Guilherme Michels',
+      email: 'guilherme@gmail.com',
+      avatarUrl: 'https://github.com/guilherme-michels.png',
+      passwordHash: await hash('123456', 1),
+    },
+  })
 
-  // const anotherUser = await prisma.user.create({
-  //   data: {
-  //     name: faker.person.fullName(),
-  //     email: faker.internet.email(),
-  //     avatarUrl: faker.image.avatarGitHub(),
-  //     passwordHash: await hash('123456', 1),
-  //   },
-  // })
+  await prisma.user.create({
+    data: {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      avatarUrl: faker.image.avatarGitHub(),
+      passwordHash: await hash('123456', 1),
+    },
+  })
 
-  // const anotherUser2 = await prisma.user.create({
-  //   data: {
-  //     name: faker.person.fullName(),
-  //     email: faker.internet.email(),
-  //     avatarUrl: faker.image.avatarGitHub(),
-  //     passwordHash: await hash('123456', 1),
-  //   },
-  // })
+  await prisma.user.create({
+    data: {
+      name: faker.person.fullName(),
+      email: faker.internet.email(),
+      avatarUrl: faker.image.avatarGitHub(),
+      passwordHash: await hash('123456', 1),
+    },
+  })
 }
 
 seed().then(() => {

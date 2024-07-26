@@ -5,6 +5,7 @@
     "paths": {
       "@/*": ["./src/*"],
       "@interfaces/*": ["./src/interfaces/*"]
+      // "@api": ["./src/index.ts"]
     }
   },
   "include": ["**/*.ts", "**/*.tsx"],

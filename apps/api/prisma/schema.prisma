@@ -39,13 +39,9 @@ model Token {
   @@map("tokens")
 }
 
-
-
-
 enum Role {
   ADMIN
   MEMBER
-  BILLING
 }
 
 model Invite {
@@ -61,14 +57,30 @@ model Invite {
   @@map("invites")
 }
 
-model Investment {
-  id        String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now()) @map("created_at")
-  updatedAt DateTime @updatedAt @map("updated_at")
+model InvestmentPlan {
+  id           String   @id @default(uuid())
+  name         String
+  description  String
+  interestRate Float
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
 
-  owner   User   @relation(fields: [ownerId], references: [id])
-  ownerId String @map("user_id")
+  investments  Investment[]
+
+  @@map("investment_plans")
+}
+
+model Investment {
+  id              String         @id @default(uuid())
+  amount          Float
+  createdAt       DateTime       @default(now()) @map("created_at")
+  updatedAt       DateTime       @updatedAt @map("updated_at")
+
+  owner           User           @relation(fields: [ownerId], references: [id])
+  ownerId         String         @map("user_id")
+
+  investmentPlan  InvestmentPlan @relation(fields: [investmentPlanId], references: [id])
+  investmentPlanId String         @map("investment_plan_id")
 
   @@map("investments")
 }
@@ -79,8 +91,8 @@ model Transaction {
   type        String   
   createdAt   DateTime @default(now()) @map("created_at")
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId      String   @map("user_id")
 
   @@map("transactions")
 }

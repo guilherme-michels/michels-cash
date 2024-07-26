@@ -17,6 +17,7 @@ export function SignInPage() {
 
   const { toast } = useToast()
   const { signIn } = useAuth()
+
   const queryClient = useQueryClient()
 
   const { mutateAsync: login } = useMutation({
@@ -73,10 +74,12 @@ export function SignInPage() {
             required
             placeholder="Informe a senha"
           />
+
           <div className="flex w-full flex-col items-center justify-center gap-4">
             <Button type="submit" className="h-12 w-full text-base">
               Entrar
             </Button>
+
             <div className="flex items-center justify-center gap-2">
               <span className="text-sm text-zinc-500">
                 Ainda não possui conta?
