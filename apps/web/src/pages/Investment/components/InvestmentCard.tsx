@@ -13,7 +13,7 @@ interface InvestmentCardProps {
 
 export function InvestmentCard({ name, details }: InvestmentCardProps) {
   return (
-    <Card className="h-[300px] w-full flex-1 cursor-grab">
+    <Card className="h-[300px] flex-1 cursor-grab">
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{details}</CardDescription>

@@ -4,6 +4,9 @@ CREATE TYPE "TokenType" AS ENUM ('PASSWORD_RECOVER');
 -- CreateEnum
 CREATE TYPE "Role" AS ENUM ('ADMIN', 'MEMBER');
 
+-- CreateEnum
+CREATE TYPE "InvestmentType" AS ENUM ('FIXED_INCOME', 'REAL_ESTATE_FUND', 'STOCKS', 'MUTUAL_FUNDS');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -39,6 +42,17 @@ CREATE TABLE "invites" (
 );
 
 -- CreateTable
+CREATE TABLE "investment_groups" (
+    "id" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "type" "InvestmentType" NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "investment_groups_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "investment_plans" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -46,6 +60,7 @@ CREATE TABLE "investment_plans" (
     "interestRate" DOUBLE PRECISION NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
+    "investment_group_id" TEXT NOT NULL,
 
     CONSTRAINT "investment_plans_pkey" PRIMARY KEY ("id")
 );
@@ -84,6 +99,9 @@ ALTER TABLE "tokens" ADD CONSTRAINT "tokens_user_id_fkey" FOREIGN KEY ("user_id"
 
 -- AddForeignKey
 ALTER TABLE "invites" ADD CONSTRAINT "invites_author_id_fkey" FOREIGN KEY ("author_id") REFERENCES "users"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "investment_plans" ADD CONSTRAINT "investment_plans_investment_group_id_fkey" FOREIGN KEY ("investment_group_id") REFERENCES "investment_groups"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "investments" ADD CONSTRAINT "investments_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

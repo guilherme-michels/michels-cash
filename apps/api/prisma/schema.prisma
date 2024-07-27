@@ -57,15 +57,37 @@ model Invite {
   @@map("invites")
 }
 
-model InvestmentPlan {
-  id           String   @id @default(uuid())
-  name         String
-  description  String
-  interestRate Float
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+enum InvestmentType {
+  FIXED_INCOME
+  REAL_ESTATE_FUND
+  STOCK
+  MUTUAL_FUNDS
+}
 
-  investments  Investment[]
+model InvestmentGroup {
+  id          String             @id @default(uuid())
+  name        String
+  type        InvestmentType
+  createdAt   DateTime           @default(now()) @map("created_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+
+  investmentPlans InvestmentPlan[]
+
+  @@map("investment_groups")
+}
+
+model InvestmentPlan {
+  id                String           @id @default(uuid())
+  name              String
+  description       String
+  interestRate      Float
+  createdAt         DateTime         @default(now()) @map("created_at")
+  updatedAt         DateTime         @updatedAt @map("updated_at")
+
+  investmentGroup   InvestmentGroup  @relation(fields: [investmentGroupId], references: [id])
+  investmentGroupId String           @map("investment_group_id")
+
+  investments       Investment[]
 
   @@map("investment_plans")
 }
@@ -80,7 +102,7 @@ model Investment {
   ownerId         String         @map("user_id")
 
   investmentPlan  InvestmentPlan @relation(fields: [investmentPlanId], references: [id])
-  investmentPlanId String         @map("investment_plan_id")
+  investmentPlanId String        @map("investment_plan_id")
 
   @@map("investments")
 }

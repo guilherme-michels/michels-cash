@@ -13,6 +13,9 @@ import {
 
 import { errorHandler } from './error-handler'
 import { registerAuthRoutes } from './routes/auth/_auth.routes'
+import { registerInvestmentGroupsRoutes } from './routes/investment-groups/_investment-groups.routes'
+import { registerInvestmentPlansRoutes } from './routes/investment-plans/_investment-plans.routes'
+import { registerInvestmentsRoutes } from './routes/investments/_investments.routes'
 import { registerInviteRoutes } from './routes/invites/_invites.routes'
 import { registerMembersRoutes } from './routes/members/_member.routes'
 
@@ -61,6 +64,9 @@ app.register(fastifyJwt, {
 registerInviteRoutes(app)
 registerAuthRoutes(app)
 registerMembersRoutes(app)
+registerInvestmentPlansRoutes(app)
+registerInvestmentsRoutes(app)
+registerInvestmentGroupsRoutes(app)
 
 const serverPort = process.env.SERVER_PORT
 if (!serverPort) {

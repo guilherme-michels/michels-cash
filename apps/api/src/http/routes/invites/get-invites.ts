@@ -47,7 +47,6 @@ export async function getInvites(app: FastifyInstance) {
         const { investmentId } = request.params
         const userId = await request.getCurrentUserId()
 
-        // Retrieve the investment and verify the user's permission
         const investment = await prisma.investment.findUnique({
           where: {
             id: investmentId,

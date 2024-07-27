@@ -1,5 +1,4 @@
 import { api } from '../../../index'
-
 import { SignInData } from '../schemas/signInSchema'
 import { SignUpData } from '../schemas/signUpSchema'
 

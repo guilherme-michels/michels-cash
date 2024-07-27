@@ -5,16 +5,16 @@ import { z } from 'zod'
 import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 
-export async function deleteInvestmentPlan(app: FastifyInstance) {
+export async function deleteInvestmentGroup(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
     .register(auth)
     .delete(
-      '/investment-plans/:id',
+      '/investment-groups/:id',
       {
         schema: {
-          tags: ['Investment Plans'],
-          summary: 'Delete an investment plan by ID',
+          tags: ['Investment Groups'],
+          summary: 'Delete an investment group by ID',
           security: [{ bearerAuth: [] }],
           params: z.object({
             id: z.string().uuid(),
@@ -30,16 +30,16 @@ export async function deleteInvestmentPlan(app: FastifyInstance) {
       async (request, reply) => {
         const { id } = request.params
 
-        const investmentPlan = await prisma.investmentPlan.findUnique({
+        const investmentGroup = await prisma.investmentGroup.findUnique({
           where: { id },
         })
 
-        if (!investmentPlan) {
-          reply.status(404).send({ message: 'Investment Plan not found' })
+        if (!investmentGroup) {
+          reply.status(404).send({ message: 'Investment group not found' })
           return
         }
 
-        await prisma.investmentPlan.delete({
+        await prisma.investmentGroup.delete({
           where: { id },
         })
 
