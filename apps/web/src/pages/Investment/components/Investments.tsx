@@ -1,55 +1,44 @@
+import { useEffect, useState } from 'react'
+
+import { getInvestmentGroups } from '../api/investmentGroup.service'
+import { InvestmentGroupData } from '../schemas/investmentGroupSchema'
+import { InvestmentPlanData } from '../schemas/investmentPlanSchema'
 import { InvestmentList } from './InvestmentList'
+export function Investments() {
+  const [investmentGroups, setInvestmentGroups] = useState<
+    InvestmentGroupData[]
+  >([])
+  const [loading, setLoading] = useState(true)
 
-const investmentsData: { [key: string]: { name: string; details: string }[] } =
-  {
-    LCI: [
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-    ],
+  useEffect(() => {
+    getInvestmentGroups()
+      .then((data) => {
+        setInvestmentGroups(data.investmentGroups)
+        setLoading(false)
+      })
+      .catch((error) => {
+        console.error('Erro ao buscar grupos de investimento:', error)
+        setLoading(false)
+      })
+  }, [])
 
-    LCA: [
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-    ],
-
-    LBC: [
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-    ],
-
-    LDC: [
-      { name: 'Investment 1', details: 'Details about investment 1' },
-      { name: 'Investment 2', details: 'Details about investment 2' },
-      { name: 'Investment 3', details: 'Details about investment 3' },
-    ],
+  if (loading) {
+    return <div>Loading...</div>
   }
 
-export function Investments() {
   return (
     <div className="flex max-h-[70vh] flex-col gap-8 overflow-y-auto overflow-x-hidden">
-      {Object.keys(investmentsData).map((key) => (
+      {investmentGroups.map((group) => (
         <InvestmentList
-          key={key}
-          title={key}
-          investments={investmentsData[key]}
+          key={group.id}
+          title={group.name}
+          investments={
+            group.investmentPlans?.map((plan: InvestmentPlanData) => ({
+              name: plan.name,
+              details: plan.description,
+              id: plan.id || '',
+            })) || []
+          }
         />
       ))}
     </div>

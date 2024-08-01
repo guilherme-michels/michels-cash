@@ -38,7 +38,7 @@ export function InvestmentPlanFormModal({
   const { reset, handleSubmit, control } = useForm<InvestmentPlanData>({
     resolver: zodResolver(investmentPlanSchema),
     defaultValues: {
-      interestRate: 0, // Initialize with a default value
+      interestRate: 0,
     },
   })
 
@@ -103,7 +103,7 @@ export function InvestmentPlanFormModal({
         </DialogHeader>
 
         <form
-          className="flex w-full flex-col gap-4 p-4"
+          className="flex w-full flex-col gap-4"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="grid w-full grid-cols-2 gap-4">
@@ -139,13 +139,18 @@ export function InvestmentPlanFormModal({
                 name="interestRate"
                 control={control}
                 render={({ field }) => (
-                  <Slider
-                    value={[field.value || 0]}
-                    onValueChange={(value) => field.onChange(value[0] || 0)}
-                    min={0}
-                    max={100}
-                    step={0.1}
-                  />
+                  <>
+                    <Slider
+                      value={[field.value || 0]}
+                      onValueChange={(value) => field.onChange(value[0] || 0)}
+                      min={0}
+                      max={100}
+                      step={0.1}
+                    />
+                    <span className="mt-2 block text-sm text-gray-700">
+                      {field.value || 0}%
+                    </span>
+                  </>
                 )}
               />
             </div>

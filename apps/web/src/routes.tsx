@@ -14,7 +14,6 @@ export function AppRoutes(): JSX.Element {
   return (
     <ReactRoutes>
       {[
-        ...AuthRoutes(),
         ...HomeRoutes(),
         ...FinancialEducationRoutes(),
         ...TransactionRoutes(),
@@ -52,7 +51,7 @@ function UnauthRoutes() {
 export function Routes() {
   const { auth } = useAuth()
 
-  if (!auth) {
+  if (!auth.isAuthenticated) {
     return <UnauthRoutes />
   } else {
     return <AppRoutes />

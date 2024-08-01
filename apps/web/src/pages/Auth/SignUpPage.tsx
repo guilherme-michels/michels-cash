@@ -32,8 +32,8 @@ export function SignUpPage() {
 
   const onSubmit = async (data: SignUpData): Promise<void> => {
     try {
-      const token = await register(data)
-      signIn(token)
+      const response = await register(data)
+      signIn({ token: response.token, user: response.user })
 
       reset()
     } catch (err: any) {
@@ -43,9 +43,9 @@ export function SignUpPage() {
 
   return (
     <div className="grid size-full grid-cols-1 lg:grid-cols-2">
-      <div className="hidden size-full flex-col items-center justify-center bg-black md:flex">
+      <div className="hidden size-full flex-col items-center justify-center bg-emerald-800 md:flex">
         <strong className="text-4xl font-semibold text-zinc-50">
-          Testando
+          MichelsCash
         </strong>
         <span className="mt-1 text-lg text-zinc-300">Testando.</span>
         <Button className="mt-12 bg-white bg-opacity-15 hover:bg-white/20 ">
@@ -54,7 +54,7 @@ export function SignUpPage() {
       </div>
 
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="mb-6 flex w-full flex-col  px-[20%]">
+        <div className="mb-6 flex w-full flex-col px-[20%]">
           <span className="text-mesLightBlue text-3xl">Olá,</span>
           <strong className="text-mesDarkBlue text-5xl">Bem vindo!</strong>
         </div>
@@ -108,7 +108,7 @@ export function SignUpPage() {
               <span className="text-sm text-zinc-500">Já possui conta?</span>
 
               <Link
-                to="/sign-in"
+                to="/"
                 className="text-sm text-blue-500 transition-all hover:text-blue-400"
               >
                 Conectar-se

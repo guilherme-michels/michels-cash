@@ -9,11 +9,16 @@ import {
 interface InvestmentCardProps {
   name: string
   details: string
+  onClick: () => void
 }
 
-export function InvestmentCard({ name, details }: InvestmentCardProps) {
+export function InvestmentCard({
+  name,
+  details,
+  onClick,
+}: InvestmentCardProps) {
   return (
-    <Card className="h-[300px] flex-1 cursor-grab">
+    <Card className="h-[300px] flex-1 cursor-grab" onClick={onClick}>
       <CardHeader>
         <CardTitle>{name}</CardTitle>
         <CardDescription>{details}</CardDescription>

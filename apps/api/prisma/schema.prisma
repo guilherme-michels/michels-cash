@@ -60,7 +60,7 @@ model Invite {
 enum InvestmentType {
   FIXED_INCOME
   REAL_ESTATE_FUND
-  STOCK
+  STOCKS
   MUTUAL_FUNDS
 }
 
@@ -76,21 +76,36 @@ model InvestmentGroup {
   @@map("investment_groups")
 }
 
+enum InvestmentRiskLevel {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model InvestmentPlan {
-  id                String           @id @default(uuid())
-  name              String
-  description       String
-  interestRate      Float
-  createdAt         DateTime         @default(now()) @map("created_at")
-  updatedAt         DateTime         @updatedAt @map("updated_at")
+  id                       String           @id @default(uuid())
+  name                     String
+  description              String
+  interestRate             Float
+  minimumInvestmentAmount  Float            @map("minimum_investment_amount")
+  maximumInvestmentAmount  Float            @map("maximum_investment_amount")
+  duration                 Int
+  riskLevel                InvestmentRiskLevel
+  liquidity                DateTime         @default(now()) @map("liquidity")
+  penaltyForEarlyWithdrawal Float            @map("penalty_for_early_withdrawal")
+  currency                 String
+  maturityDate             DateTime         @map("maturity_date")
+  createdAt                DateTime         @default(now()) @map("created_at")
+  updatedAt                DateTime         @updatedAt @map("updated_at")
 
-  investmentGroup   InvestmentGroup  @relation(fields: [investmentGroupId], references: [id])
-  investmentGroupId String           @map("investment_group_id")
+  investmentGroup          InvestmentGroup  @relation(fields: [investmentGroupId], references: [id])
+  investmentGroupId        String           @map("investment_group_id")
 
-  investments       Investment[]
+  investments              Investment[]
 
   @@map("investment_plans")
 }
+
 
 model Investment {
   id              String         @id @default(uuid())

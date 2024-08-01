@@ -4,12 +4,23 @@ import { SignUpData } from '../schemas/signUpSchema'
 
 export function SignIn(data: SignInData): Promise<{
   token: string
+  user: { name: string; email: string }
 }> {
   return api
-    .post<{ token: string }>('/sessions/password', data)
+    .post<{
+      token: string
+      user: { name: string; email: string }
+    }>('/sessions/password', data)
     .then((res) => res.data)
 }
 
-export function SignUp(data: SignUpData): Promise<{ token: string }> {
-  return api.post<{ token: string }>('/users', data).then((res) => res.data)
+export function SignUp(
+  data: SignUpData
+): Promise<{ token: string; user: { name: string; email: string } }> {
+  return api
+    .post<{
+      token: string
+      user: { name: string; email: string }
+    }>('/users', data)
+    .then((res) => res.data)
 }

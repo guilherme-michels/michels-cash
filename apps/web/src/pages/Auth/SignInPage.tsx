@@ -31,8 +31,11 @@ export function SignInPage() {
 
   const onSubmit = async (data: SignInData): Promise<void> => {
     try {
-      const token = await login(data)
-      signIn(token)
+      const response = await login(data)
+
+      signIn({ token: response.token, user: response.user })
+
+      toast({ title: 'Login bem sucedido', status: 'success' })
 
       reset()
     } catch (err: any) {
@@ -42,22 +45,22 @@ export function SignInPage() {
 
   return (
     <div className="grid size-full grid-cols-1 lg:grid-cols-2">
-      <div className="hidden size-full flex-col items-center justify-center bg-black md:flex">
+      <div className="hidden size-full flex-col items-center justify-center bg-emerald-800 md:flex">
         <strong className="text-4xl font-semibold text-zinc-50">
-          Testando
+          MichelsCash
         </strong>
-        <span className="mt-1 text-lg text-zinc-300">Testando.</span>
+        <span className="mt-1 text-lg text-zinc-300">Teste</span>
         <Button className="mt-12 bg-white bg-opacity-15 hover:bg-white/20 ">
           Saiba mais
         </Button>
       </div>
       <div className="flex size-full flex-col items-center justify-center">
-        <div className="mb-12 flex w-1/2 flex-col">
+        <div className="mb-6 flex w-full flex-col px-[20%]">
           <span className="text-mesLightBlue text-3xl">Olá,</span>
           <strong className="text-mesDarkBlue text-5xl">Bem vindo!</strong>
         </div>
         <form
-          className="flex w-1/2 flex-col gap-4"
+          className="flex w-full flex-col gap-4 px-[20%]"
           onSubmit={handleSubmit(onSubmit)}
         >
           <FormInput
@@ -73,6 +76,7 @@ export function SignInPage() {
             label="Senha"
             required
             placeholder="Informe a senha"
+            type="password"
           />
 
           <div className="flex w-full flex-col items-center justify-center gap-4">

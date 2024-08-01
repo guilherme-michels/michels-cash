@@ -26,7 +26,13 @@ export function FinancialEducation() {
         <Breadcrumb options={options} />
 
         <div className="flex flex-col gap-4">
-          <FinancialEducationFilter />
+          <div className="flex w-full items-center justify-between">
+            <FinancialEducationFilter />
+
+            <Button onClick={() => console.log(true)}>
+              Adicionar postagem
+            </Button>
+          </div>
 
           <div className="grid h-full w-full grid-cols-3 gap-4">
             <div className="order-2 col-span-3 flex max-h-[75vh] flex-col gap-4 overflow-y-auto xl:order-1 xl:col-span-2">

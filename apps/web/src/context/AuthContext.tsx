@@ -8,24 +8,26 @@ interface Auth {
   isAuthenticated: boolean
 }
 interface User {
-  id: number
   email: string
   name: string
 }
 
-interface signInResponse {
+type SignInResponse = {
   token: string
-  // user: User
+  user: {
+    email: string
+    name: string
+  }
 }
 
 interface AuthContextProps {
   auth: Auth
   user: User | null | undefined
-  signIn: (loginResponse: signInResponse) => void
+  signIn: (response: SignInResponse) => void
   signOut: () => void
 }
 
-const TOKEN = 'CBtoken'
+const TOKEN = 'michelscash_token'
 const AuthContext = createContext<AuthContextProps | undefined>(undefined)
 
 export function AuthProvider({ children }: PropsWithChildren<unknown>) {
@@ -44,9 +46,9 @@ export function AuthProvider({ children }: PropsWithChildren<unknown>) {
     navigate('/')
   }
 
-  const signIn = (loginResponse: signInResponse): void => {
-    localStorage.setItem(TOKEN, loginResponse.token)
-    // setUser(loginResponse.user)
+  const signIn = (response: SignInResponse): void => {
+    localStorage.setItem(TOKEN, response.token)
+    setUser(response.user)
     setIsAuthenticated(true)
   }
 

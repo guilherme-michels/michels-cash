@@ -20,10 +20,12 @@ export async function getUserInvestments(app: FastifyInstance) {
             200: z.object({
               investments: z.array(
                 z.object({
-                  id: z.string().uuid(),
-                  name: z.string(),
-                  description: z.string().nullable(),
-                  createdAt: z.date(),
+                  id: z.string().uuid().optional(),
+                  amount: z.number(),
+                  createdAt: z.date().optional(),
+                  updatedAt: z.date().optional(),
+                  ownerId: z.string().uuid(),
+                  investmentPlanId: z.string().uuid(),
                 })
               ),
             }),
@@ -35,17 +37,15 @@ export async function getUserInvestments(app: FastifyInstance) {
 
         const investments = await prisma.investment.findMany({
           where: {
-            members: {
-              some: {
-                userId,
-              },
-            },
+            ownerId: userId,
           },
           select: {
             id: true,
-            name: true,
-            description: true,
+            amount: true,
             createdAt: true,
+            updatedAt: true,
+            ownerId: true,
+            investmentPlanId: true,
           },
         })
 

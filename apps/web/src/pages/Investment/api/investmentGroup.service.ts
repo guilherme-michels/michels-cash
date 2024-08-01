@@ -6,6 +6,6 @@ export function getInvestmentGroups(): Promise<{
   investmentGroups: InvestmentGroupData[]
 }> {
   return api
-    .get<{ investmentGroups: any[] }>('/investment-groups')
+    .get<{ investmentGroups: InvestmentGroupData[] }>('/investment-groups')
     .then((res) => res.data)
 }
