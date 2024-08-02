@@ -17,3 +17,23 @@ export function createInvestment(investment: InvestmentData): Promise<{
     .post<{ investment: InvestmentData }>('/investments', investment)
     .then((res) => res.data)
 }
+
+export function getInvestmentsSummary(): Promise<{
+  totalInvestment: number
+  investmentGroups: {
+    groupName: string
+    totalAmount: number
+    percentage: number
+  }[]
+}> {
+  return api
+    .get<{
+      totalInvestment: number
+      investmentGroups: {
+        groupName: string
+        totalAmount: number
+        percentage: number
+      }[]
+    }>('/investments/summary')
+    .then((res) => res.data)
+}

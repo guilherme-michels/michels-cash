@@ -9,7 +9,8 @@ export const auth = fastifyPlugin(async (app: FastifyInstance) => {
       try {
         const { sub } = await request.jwtVerify<{ sub: string }>()
         return sub
-      } catch {
+      } catch (error) {
+        console.error('JWT verification failed:', error)
         throw new UnauthorizedError('Invalid auth token')
       }
     }

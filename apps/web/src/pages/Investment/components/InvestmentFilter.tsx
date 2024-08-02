@@ -1,4 +1,4 @@
-import { Eye, ListFilter } from 'lucide-react'
+import { ListFilter } from 'lucide-react'
 
 import { Searchable } from '@/components/searchable'
 import {
@@ -34,8 +34,6 @@ export function InvestmentFilter() {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-
-      <Eye className="h-10 w-10 cursor-pointer rounded-xl bg-zinc-50 p-2 transition-all hover:bg-zinc-200" />
     </div>
   )
 }

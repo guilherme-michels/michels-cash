@@ -19,7 +19,9 @@ model User {
   tokens       Token[]
   invites      Invite[]
   investments  Investment[]
-  transactions Transaction[]
+
+  sentTransactions      Transaction[] @relation("sentTransactions")
+  receivedTransactions  Transaction[] @relation("receivedTransactions")
 
   @@map("users")
 }
@@ -125,11 +127,16 @@ model Investment {
 model Transaction {
   id          String   @id @default(uuid())
   amount      Float
-  type        String   
+  type        String
+  currency    String
+  description String   
   createdAt   DateTime @default(now()) @map("created_at")
 
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId      String   @map("user_id")
+  sender            User     @relation("sentTransactions", fields: [senderId], references: [id], onDelete: Cascade)
+  senderId          String   @map("sender_id")
+  
+  recipient         User     @relation("receivedTransactions", fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId       String   @map("recipient_id")
 
   @@map("transactions")
 }

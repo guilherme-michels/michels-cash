@@ -27,7 +27,7 @@ export function Investment() {
             <InvestmentFilter />
 
             <Button onClick={() => setIsInvestmentPlanFormModalOpen(true)}>
-              Adicionar investimento
+              Adicionar plano de investimento
             </Button>
           </div>
 

@@ -29,12 +29,12 @@ export async function createAccount(app: FastifyInstance) {
       })
 
       if (userWithSameEmail) {
-        throw new BadRequestError('User with same e-mail already existes.')
+        throw new BadRequestError('User with same e-mail already exists.')
       }
 
       const passwordHash = await hash(password, 6)
 
-      await prisma.user.create({
+      const user = await prisma.user.create({
         data: {
           name,
           email,
@@ -42,7 +42,22 @@ export async function createAccount(app: FastifyInstance) {
         },
       })
 
-      return reply.status(201).send()
+      const token = await reply.jwtSign(
+        { sub: user.id },
+        {
+          sign: {
+            expiresIn: '7d',
+          },
+        }
+      )
+
+      return reply.status(201).send({
+        token,
+        user: {
+          name: user.name,
+          email: user.email,
+        },
+      })
     }
   )
 }

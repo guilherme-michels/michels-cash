@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm } from 'react-hook-form'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 import { FormInput } from '@/components/form-input'
 import { useToast } from '@/components/ui/use-toast'
@@ -18,6 +18,7 @@ export function SignUpPage() {
 
   const { toast } = useToast()
   const { signIn } = useAuth()
+  const navigate = useNavigate()
 
   const queryClient = useQueryClient()
 
@@ -33,9 +34,14 @@ export function SignUpPage() {
   const onSubmit = async (data: SignUpData): Promise<void> => {
     try {
       const response = await register(data)
-      signIn({ token: response.token, user: response.user })
+      if (response) {
+        signIn({ token: response.token, user: response.user })
+        toast({ title: 'Conta criada com sucesso', status: 'success' })
 
-      reset()
+        navigate('/')
+
+        reset()
+      }
     } catch (err: any) {
       toast({ title: err.response.data.message, status: 'error' })
     }

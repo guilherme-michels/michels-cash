@@ -24,3 +24,11 @@ export function SignUp(
     }>('/users', data)
     .then((res) => res.data)
 }
+
+export function getProfile(): Promise<{
+  user: { name: string; email: string }
+}> {
+  return api
+    .get<{ user: { name: string; email: string } }>('/profile')
+    .then((res) => res.data)
+}

@@ -9,6 +9,7 @@ export function ScheduleModal({ isOpened, onClose }: ScheduleModalProps) {
   return (
     <Dialog open={isOpened} onOpenChange={onClose}>
       <DialogClose onClick={onClose} />
+
       <DialogContent></DialogContent>
     </Dialog>
   )

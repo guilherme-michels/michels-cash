@@ -7,6 +7,9 @@ CREATE TYPE "Role" AS ENUM ('ADMIN', 'MEMBER');
 -- CreateEnum
 CREATE TYPE "InvestmentType" AS ENUM ('FIXED_INCOME', 'REAL_ESTATE_FUND', 'STOCKS', 'MUTUAL_FUNDS');
 
+-- CreateEnum
+CREATE TYPE "InvestmentRiskLevel" AS ENUM ('LOW', 'MEDIUM', 'HIGH');
+
 -- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
@@ -58,6 +61,14 @@ CREATE TABLE "investment_plans" (
     "name" TEXT NOT NULL,
     "description" TEXT NOT NULL,
     "interestRate" DOUBLE PRECISION NOT NULL,
+    "minimum_investment_amount" DOUBLE PRECISION NOT NULL,
+    "maximum_investment_amount" DOUBLE PRECISION NOT NULL,
+    "duration" INTEGER NOT NULL,
+    "riskLevel" "InvestmentRiskLevel" NOT NULL,
+    "liquidity" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "penalty_for_early_withdrawal" DOUBLE PRECISION NOT NULL,
+    "currency" TEXT NOT NULL,
+    "maturity_date" TIMESTAMP(3) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
     "investment_group_id" TEXT NOT NULL,
@@ -82,8 +93,11 @@ CREATE TABLE "transactions" (
     "id" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "type" TEXT NOT NULL,
+    "currency" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "user_id" TEXT NOT NULL,
+    "sender_id" TEXT NOT NULL,
+    "recipient_id" TEXT NOT NULL,
 
     CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")
 );
@@ -110,4 +124,7 @@ ALTER TABLE "investments" ADD CONSTRAINT "investments_user_id_fkey" FOREIGN KEY 
 ALTER TABLE "investments" ADD CONSTRAINT "investments_investment_plan_id_fkey" FOREIGN KEY ("investment_plan_id") REFERENCES "investment_plans"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "transactions" ADD CONSTRAINT "transactions_user_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_sender_id_fkey" FOREIGN KEY ("sender_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_recipient_id_fkey" FOREIGN KEY ("recipient_id") REFERENCES "users"("id") ON DELETE CASCADE ON UPDATE CASCADE;

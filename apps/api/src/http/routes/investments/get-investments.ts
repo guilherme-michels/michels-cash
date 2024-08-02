@@ -5,6 +5,8 @@ import { z } from 'zod'
 import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 
+import { investmentPlanSchema } from '../investment-plans/_investment-plan.schema'
+
 export async function getUserInvestments(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -26,6 +28,7 @@ export async function getUserInvestments(app: FastifyInstance) {
                   updatedAt: z.date().optional(),
                   ownerId: z.string().uuid(),
                   investmentPlanId: z.string().uuid(),
+                  investmentPlan: investmentPlanSchema,
                 })
               ),
             }),
@@ -46,6 +49,7 @@ export async function getUserInvestments(app: FastifyInstance) {
             updatedAt: true,
             ownerId: true,
             investmentPlanId: true,
+            investmentPlan: true,
           },
         })
 
