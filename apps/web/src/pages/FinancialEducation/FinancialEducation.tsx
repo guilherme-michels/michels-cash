@@ -12,7 +12,7 @@ import { PostCard } from './components/PostCard'
 export function FinancialEducation() {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const options = [
-    { name: 'Página inicial', link: '/home' },
+    { name: 'Página inicial', link: '/' },
     { name: 'Educação financeira', link: '/financial-education' },
   ]
 

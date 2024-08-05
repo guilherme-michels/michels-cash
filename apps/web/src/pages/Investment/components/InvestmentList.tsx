@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import {
   Carousel,
@@ -7,21 +7,27 @@ import {
 } from '@/components/ui/carousel'
 
 import { InvestmentCard } from './InvestmentCard'
-import { InvestmentFormModal } from './InvestmentFormModal'
+import { InvestmentFormModal } from './InvestmentFormModal/InvestmentFormModal'
 
-interface Investment {
+interface InvestmentPlansSummary {
   id: string
   name: string
-  details: string
+  description: string
+  riskLevel: string
+  minimumInvestmentAmount: number
+  liquidity: string
 }
 
 interface InvestmentListProps {
   title: string
-  investments: Investment[]
+  investmentPlans: InvestmentPlansSummary[]
 }
 
-export function InvestmentList({ title, investments }: InvestmentListProps) {
-  const [selectedInvestmentId, setSelectedInvestmentId] = useState<
+export function InvestmentList({
+  title,
+  investmentPlans,
+}: InvestmentListProps) {
+  const [selectedInvestmentPlanId, setSelectedInvestmentPlanId] = useState<
     string | null
   >(null)
 
@@ -32,15 +38,14 @@ export function InvestmentList({ title, investments }: InvestmentListProps) {
       <div className="relative">
         <Carousel className="flex snap-x snap-mandatory gap-4 overflow-x-auto">
           <CarouselContent className="flex">
-            {investments.map((investment, index) => (
+            {investmentPlans.map((investmentPlan, index) => (
               <CarouselItem
                 key={index}
-                className="w-64 min-w-[300px] flex-none snap-start"
+                className="w-64 min-w-[400px] flex-none snap-start"
               >
                 <InvestmentCard
-                  name={investment.name}
-                  details={investment.details}
-                  onClick={() => setSelectedInvestmentId(investment.id)}
+                  investmentPlan={investmentPlan}
+                  onClick={() => setSelectedInvestmentPlanId(investmentPlan.id)}
                 />
               </CarouselItem>
             ))}
@@ -48,11 +53,11 @@ export function InvestmentList({ title, investments }: InvestmentListProps) {
         </Carousel>
       </div>
 
-      {selectedInvestmentId && (
+      {selectedInvestmentPlanId && (
         <InvestmentFormModal
-          investmentId={selectedInvestmentId}
-          onClose={() => setSelectedInvestmentId(null)}
-          isOpened={!!selectedInvestmentId}
+          investmentPlanId={selectedInvestmentPlanId}
+          onClose={() => setSelectedInvestmentPlanId(null)}
+          isOpened={!!selectedInvestmentPlanId}
         />
       )}
     </div>

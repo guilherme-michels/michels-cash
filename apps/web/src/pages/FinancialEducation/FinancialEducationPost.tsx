@@ -3,7 +3,7 @@ import { SidebarTemplate } from '@/template/SidebarTemplate'
 
 export function FinancialEducationPost() {
   const options = [
-    { name: 'Página inicial', link: '/home' },
+    { name: 'Página inicial', link: '/' },
     { name: 'Educação financeira', link: '/financial-education' },
     {
       name: 'Estratégia de investimentos: aprenda o que é, os tipos e como montar',

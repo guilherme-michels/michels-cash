@@ -4,7 +4,7 @@ import HomeHeader from './components/HomeHeader'
 import { QuickAccessCard } from './components/QuickAccessCard'
 
 export function HomePage() {
-  const options = [{ name: 'Página inicial', link: '/home' }]
+  const options = [{ name: 'Página inicial', link: '/' }]
   return (
     <SidebarTemplate>
       <div className="p-4">

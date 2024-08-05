@@ -10,7 +10,7 @@ import { Investments } from './components/Investments'
 
 export function Investment() {
   const options = [
-    { name: 'Página inicial', link: '/home' },
+    { name: 'Página inicial', link: '/' },
     { name: 'Investimentos', link: '/investments' },
   ]
 

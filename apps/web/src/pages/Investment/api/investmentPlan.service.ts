@@ -9,3 +9,13 @@ export function createInvestmentPlan(data: InvestmentPlanData): Promise<{
     .post<{ investmentPlan: InvestmentPlanData }>('/investment-plans', data)
     .then((res) => res.data)
 }
+
+export function getInvestmentPlan(investmentPlanId: string): Promise<{
+  investmentPlan: InvestmentPlanData
+}> {
+  return api
+    .get<{
+      investmentPlan: InvestmentPlanData
+    }>(`/investment-plans/${investmentPlanId}`)
+    .then((res) => res.data)
+}

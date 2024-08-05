@@ -65,7 +65,7 @@ export function DesktopSidebar({ isSidebarOpened }: DesktopSidebarProps) {
     >
       <nav className="flex flex-col items-center gap-4 px-2 sm:py-5">
         <Link
-          to="/home"
+          to="/"
           className={cn(
             'flex w-full items-center gap-2 rounded bg-emerald-700 px-1 py-2 text-lg font-semibold text-primary-foreground transition-all hover:bg-emerald-700/90'
           )}

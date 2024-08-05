@@ -1,4 +1,4 @@
-import { PageOptions } from '@interfaces/PageOptions'
+import { PageOptions } from '@/interfaces/pageOptions'
 
 import { TransactionData } from '@/pages/Transaction/schemas/transactionSchema'
 

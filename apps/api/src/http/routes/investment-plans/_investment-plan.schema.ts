@@ -1,6 +1,8 @@
 import { z } from 'zod'
 
-const InvestmentRiskLevel = z.enum(['LOW', 'MEDIUM', 'HIGH'])
+import { investmentGroupPlaceholderSchema } from '../investment-groups/_investment-group.schema'
+
+export const InvestmentRiskLevel = z.enum(['LOW', 'MEDIUM', 'HIGH'])
 
 export const investmentPlanSchema = z.object({
   id: z.string().uuid().optional(),
@@ -18,7 +20,7 @@ export const investmentPlanSchema = z.object({
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
   investmentGroupId: z.string().uuid(),
-  investments: z.array(z.any()).optional(),
+  investmentGroup: z.lazy(() => investmentGroupPlaceholderSchema).optional(),
 })
 
 export type InvestmentPlanData = z.infer<typeof investmentPlanSchema>

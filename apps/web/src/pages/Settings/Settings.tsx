@@ -3,7 +3,7 @@ import { SidebarTemplate } from '@/template/SidebarTemplate'
 
 export function Settings() {
   const options = [
-    { name: 'Página inicial', link: '/home' },
+    { name: 'Página inicial', link: '/' },
     { name: 'Configurações', link: '/settings' },
   ]
   return (

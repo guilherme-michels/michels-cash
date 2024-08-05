@@ -1,13 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 import { FormInput } from '@/components/form-input'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -16,19 +15,25 @@ import {
 } from '@/components/ui/dialog'
 import { useToast } from '@/components/ui/use-toast'
 
-import { createInvestment, getInvestment } from '../api/investment.service'
-import { InvestmentData, investmentSchema } from '../schemas/investmentSchema'
+import { createInvestment } from '../../api/investment.service'
+import { getInvestmentPlan } from '../../api/investmentPlan.service'
+import { InvestmentPlanData } from '../../schemas/investmentPlanSchema'
+import {
+  InvestmentData,
+  investmentSchema,
+} from '../../schemas/investmentSchema'
+import { InvestmentDetails } from './InvestmentDetails'
 
 interface InvestmentFormModalProps {
   isOpened: boolean
   onClose: () => void
-  investmentId?: string
+  investmentPlanId?: string
 }
 
 export function InvestmentFormModal({
   isOpened,
   onClose,
-  investmentId,
+  investmentPlanId,
 }: InvestmentFormModalProps) {
   const { reset, handleSubmit, control } = useForm<InvestmentData>({
     resolver: zodResolver(investmentSchema),
@@ -36,15 +41,17 @@ export function InvestmentFormModal({
 
   const { toast } = useToast()
   const queryClient = useQueryClient()
+  const [investmentPlan, setInvestmentPlan] =
+    useState<InvestmentPlanData | null>(null)
 
   useEffect(() => {
     if (!isOpened) return
 
-    async function fetchInvestment() {
+    async function fetchInvestmentPlan() {
       try {
-        if (investmentId) {
-          const investment = await getInvestment(investmentId)
-          console.log(investment)
+        if (investmentPlanId) {
+          const investment = await getInvestmentPlan(investmentPlanId)
+          setInvestmentPlan(investment.investmentPlan)
         } else {
           reset()
         }
@@ -53,8 +60,8 @@ export function InvestmentFormModal({
       }
     }
 
-    fetchInvestment()
-  }, [isOpened, investmentId, reset, toast])
+    fetchInvestmentPlan()
+  }, [isOpened, investmentPlanId, reset, toast])
 
   const { mutateAsync: addInvestment } = useMutation({
     mutationFn: async (data: InvestmentData) => {
@@ -80,13 +87,16 @@ export function InvestmentFormModal({
 
   return (
     <Dialog open={isOpened} onOpenChange={onClose}>
-      <DialogContent className="max-w-5xl">
+      <DialogContent className="max-w-7xl">
         <DialogHeader>
           <DialogTitle>Adicionar Investimento</DialogTitle>
-          <DialogDescription>
-            Adicione um novo plano de investimento
-          </DialogDescription>
+          <DialogDescription>Adicione um novo investimento</DialogDescription>
         </DialogHeader>
+
+        {investmentPlan && (
+          <InvestmentDetails investmentPlan={investmentPlan} />
+        )}
+
         <form
           className="flex w-full flex-col gap-4"
           onSubmit={handleSubmit(onSubmit)}

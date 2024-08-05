@@ -12,7 +12,7 @@ import { Withdraw } from './components/Withdraw/Withdraw'
 
 export function Account() {
   const options = [
-    { name: 'Página inicial', link: '/home' },
+    { name: 'Página inicial', link: '/' },
     { name: 'Minha conta', link: '/my-account' },
   ]
 

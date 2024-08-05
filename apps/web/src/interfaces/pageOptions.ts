@@ -1,4 +1,4 @@
-export interface PageOptions {
+export interface pageOptions {
   endIndex?: number
   firstPage?: number
   hasNextPage?: boolean

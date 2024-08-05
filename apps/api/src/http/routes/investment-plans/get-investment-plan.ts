@@ -5,6 +5,8 @@ import { z } from 'zod'
 import { auth } from '@/http/middlewares/auth'
 import { prisma } from '@/lib/prisma'
 
+import { InvestmentRiskLevel } from './_investment-plan.schema'
+
 export async function getInvestmentPlan(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -21,15 +23,20 @@ export async function getInvestmentPlan(app: FastifyInstance) {
           }),
           response: {
             200: z.object({
-              id: z.string().uuid(),
-              name: z.string(),
-              description: z.string(),
-              interestRate: z.number(),
-              createdAt: z.date(),
-              updatedAt: z.date(),
-              investmentGroup: z.object({
+              investmentPlan: z.object({
                 id: z.string().uuid(),
                 name: z.string(),
+                description: z.string(),
+                interestRate: z.number(),
+                riskLevel: InvestmentRiskLevel,
+                minimumInvestmentAmount: z.number().optional(),
+                maximumInvestmentAmount: z.number().optional(),
+                duration: z.number().int(),
+                liquidity: z.date(),
+                penaltyForEarlyWithdrawal: z.number().nonnegative().optional(),
+                currency: z.string(),
+                maturityDate: z.date(),
+                investmentGroupId: z.string().uuid(),
               }),
             }),
             404: z.object({
@@ -53,18 +60,23 @@ export async function getInvestmentPlan(app: FastifyInstance) {
           return
         }
 
-        return {
-          id: investmentPlan.id,
-          name: investmentPlan.name,
-          description: investmentPlan.description,
-          interestRate: investmentPlan.interestRate,
-          createdAt: investmentPlan.createdAt,
-          updatedAt: investmentPlan.updatedAt,
-          investmentGroup: {
-            id: investmentPlan.investmentGroup.id,
-            name: investmentPlan.investmentGroup.name,
+        reply.send({
+          investmentPlan: {
+            id: investmentPlan.id,
+            name: investmentPlan.name,
+            description: investmentPlan.description,
+            interestRate: investmentPlan.interestRate,
+            minimumInvestmentAmount: investmentPlan.minimumInvestmentAmount,
+            maximumInvestmentAmount: investmentPlan.maximumInvestmentAmount,
+            riskLevel: investmentPlan.riskLevel,
+            duration: investmentPlan.duration,
+            liquidity: investmentPlan.liquidity,
+            penaltyForEarlyWithdrawal: investmentPlan.penaltyForEarlyWithdrawal,
+            currency: investmentPlan.currency,
+            maturityDate: investmentPlan.maturityDate,
+            investmentGroupId: investmentPlan.investmentGroupId,
           },
-        }
+        })
       }
     )
 }

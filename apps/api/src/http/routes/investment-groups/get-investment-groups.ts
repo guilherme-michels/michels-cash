@@ -12,6 +12,8 @@ const investmentTypeEnum = z.enum([
   'MUTUAL_FUNDS',
 ])
 
+const investmentRiskLevelEnum = z.enum(['LOW', 'MEDIUM', 'HIGH'])
+
 export async function getInvestmentGroups(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
@@ -23,6 +25,15 @@ export async function getInvestmentGroups(app: FastifyInstance) {
           tags: ['Investment Groups'],
           summary: 'Get all investment groups',
           security: [{ bearerAuth: [] }],
+          querystring: z.object({
+            type: investmentTypeEnum.optional(),
+            risk: z
+              .union([
+                investmentRiskLevelEnum,
+                z.array(investmentRiskLevelEnum),
+              ])
+              .optional(),
+          }),
           response: {
             200: z.object({
               investmentGroups: z.array(
@@ -37,6 +48,9 @@ export async function getInvestmentGroups(app: FastifyInstance) {
                         name: z.string(),
                         description: z.string(),
                         interestRate: z.number(),
+                        riskLevel: investmentRiskLevelEnum,
+                        minimumInvestmentAmount: z.number().optional(),
+                        liquidity: z.date(),
                         createdAt: z.date(),
                         updatedAt: z.date(),
                         investmentGroupId: z.string(),
@@ -51,8 +65,30 @@ export async function getInvestmentGroups(app: FastifyInstance) {
           },
         },
       },
-      async () => {
+      async (request) => {
+        const { type, risk } = request.query as {
+          type?: typeof investmentTypeEnum._type
+          risk?:
+            | typeof investmentRiskLevelEnum._type
+            | (typeof investmentRiskLevelEnum._type)[]
+        }
+
+        const riskLevels = Array.isArray(risk) ? risk : risk ? [risk] : []
+
         const investmentGroups = await prisma.investmentGroup.findMany({
+          where: {
+            type: type || undefined,
+            investmentPlans:
+              riskLevels.length > 0
+                ? {
+                    some: {
+                      riskLevel: {
+                        in: riskLevels,
+                      },
+                    },
+                  }
+                : undefined,
+          },
           select: {
             id: true,
             name: true,
@@ -65,6 +101,9 @@ export async function getInvestmentGroups(app: FastifyInstance) {
                 name: true,
                 description: true,
                 interestRate: true,
+                minimumInvestmentAmount: true,
+                liquidity: true,
+                riskLevel: true,
                 createdAt: true,
                 updatedAt: true,
                 investmentGroupId: true,
@@ -72,8 +111,6 @@ export async function getInvestmentGroups(app: FastifyInstance) {
             },
           },
         })
-
-        console.log('Retrieved Investment Groups:', investmentGroups)
 
         return {
           investmentGroups: investmentGroups.map((group) => ({

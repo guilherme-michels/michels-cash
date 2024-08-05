@@ -18,7 +18,7 @@ import { TransactionTabs } from './components/TransactionTabs'
 
 export function Transaction() {
   const options = [
-    { name: 'Página inicial', link: '/home' },
+    { name: 'Página inicial', link: '/' },
     { name: 'Transações', link: '/transactions' },
   ]
   return (
