@@ -7,14 +7,15 @@ import { InvestmentDetailsCard } from './components/InvestmentDetailsCard'
 import { InvestmentTypesTotalizerCard } from './components/InvestmentTypesTotalizerCard'
 
 interface InvestmentGroup {
-  groupName: string
+  id: string
+  name: string
   totalAmount: number
   percentage: number
 }
 
 export function Investment() {
-  const [investmentTypeSelected, setInvestmentTypeSelected] = useState<
-    null | string
+  const [investmentGroupSelected, setInvestmentGroupSelected] = useState<
+    string | null
   >(null)
   const [totalInvestment, setTotalInvestment] = useState<number>(0)
   const [investmentGroups, setInvestmentGroups] = useState<InvestmentGroup[]>(
@@ -30,6 +31,13 @@ export function Investment() {
     if (investmentSummaryData) {
       setTotalInvestment(investmentSummaryData.totalInvestment)
       setInvestmentGroups(investmentSummaryData.investmentGroups)
+
+      if (investmentSummaryData.investmentGroups.length === 0) {
+        setInvestmentGroupSelected(null)
+        return
+      }
+
+      setInvestmentGroupSelected(investmentSummaryData.investmentGroups[0].id)
     }
   }, [investmentSummaryData])
 
@@ -39,11 +47,18 @@ export function Investment() {
         isLoading={isLoading}
         totalInvestment={totalInvestment}
         investmentGroups={investmentGroups}
-        onSelectInvestmentType={(value) => setInvestmentTypeSelected(value)}
+        onSelectInvestmentType={(value) => {
+          const selectedGroup = investmentGroups.find(
+            (group) => group.id === value
+          )
+          if (selectedGroup) {
+            setInvestmentGroupSelected(selectedGroup.id)
+          }
+        }}
       />
 
-      {investmentTypeSelected && (
-        <InvestmentDetailsCard name={investmentTypeSelected} />
+      {investmentGroupSelected && (
+        <InvestmentDetailsCard groupId={investmentGroupSelected} />
       )}
     </div>
   )

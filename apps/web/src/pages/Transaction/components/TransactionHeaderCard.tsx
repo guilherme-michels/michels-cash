@@ -30,7 +30,7 @@ export function TransactionHeaderCard({
       </CardHeader>
       <CardContent className="flex w-full items-end justify-end gap-2 pt-0">
         <strong className="text-lg">R$</strong>
-        <strong className="text-4xl text-zinc-800"> 15.000,00</strong>
+        <strong className="text-3xl text-zinc-800"> 15.000,00</strong>
       </CardContent>
     </Card>
   )

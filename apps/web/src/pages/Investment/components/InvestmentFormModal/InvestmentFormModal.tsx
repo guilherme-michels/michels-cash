@@ -109,6 +109,7 @@ export function InvestmentFormModal({
                 label="Quantia"
                 required
                 type="number"
+                step={0.5}
                 placeholder="Informe a quantia"
               />
             </div>

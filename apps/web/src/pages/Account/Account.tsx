@@ -18,7 +18,7 @@ export function Account() {
 
   const [selectedCard, setSelectedCard] = useState<
     null | 'current-account' | 'investment' | 'withdraw' | 'deposit'
-  >(null)
+  >('investment')
 
   return (
     <SidebarTemplate>
@@ -28,14 +28,6 @@ export function Account() {
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
             <AccountHeaderCard
-              icon={<CircleDollarSign color="#19850b" />}
-              description="Conta corrente"
-              title="Conta corrente"
-              onSelect={() => setSelectedCard('current-account')}
-              selected={selectedCard === 'current-account'}
-            />
-
-            <AccountHeaderCard
               icon={<Gem color="#19850b" />}
               description="Investido"
               title="Investido"
@@ -44,13 +36,19 @@ export function Account() {
             />
 
             <AccountHeaderCard
+              icon={<CircleDollarSign color="#19850b" />}
+              description="Conta corrente"
+              title="Conta corrente"
+              onSelect={() => setSelectedCard('current-account')}
+              selected={selectedCard === 'current-account'}
+            />
+            <AccountHeaderCard
               icon={<Plus color="#19850b" />}
               description="Entradas"
               title="Entradas"
               onSelect={() => setSelectedCard('deposit')}
               selected={selectedCard === 'deposit'}
             />
-
             <AccountHeaderCard
               icon={<Minus color="#850f0b" />}
               description="Saídas"

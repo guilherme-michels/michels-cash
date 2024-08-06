@@ -21,7 +21,9 @@ export async function getUserInvestmentsSummary(app: FastifyInstance) {
               totalInvestment: z.number(),
               investmentGroups: z.array(
                 z.object({
-                  groupName: z.string(),
+                  id: z.string().uuid(),
+                  name: z.string(),
+                  description: z.string().optional(),
                   totalAmount: z.number(),
                   percentage: z.number(),
                 })
@@ -42,7 +44,11 @@ export async function getUserInvestmentsSummary(app: FastifyInstance) {
           const investments = await prisma.investment.findMany({
             where: { ownerId: userId },
             include: {
-              investmentPlan: true,
+              investmentPlan: {
+                include: {
+                  investmentGroup: true,
+                },
+              },
             },
           })
 
@@ -59,26 +65,32 @@ export async function getUserInvestmentsSummary(app: FastifyInstance) {
 
           const investmentGroupsMap = investments.reduce(
             (groups, investment) => {
-              const groupName = investment.investmentPlan.name
-              if (!groups[groupName]) {
-                groups[groupName] = 0
+              const group = investment.investmentPlan.investmentGroup
+              if (!group) return groups
+              if (!groups[group.id]) {
+                groups[group.id] = { ...group, totalAmount: 0 }
               }
-              groups[groupName] += investment.amount
+              groups[group.id].totalAmount += investment.amount
               return groups
             },
-            {} as Record<string, number>
+            {} as Record<
+              string,
+              {
+                id: string
+                name: string
+                totalAmount: number
+              }
+            >
           )
 
-          const investmentGroups = Object.keys(investmentGroupsMap).map(
-            (groupName) => {
-              const totalAmount = investmentGroupsMap[groupName]
+          const investmentGroups = Object.values(investmentGroupsMap).map(
+            (group) => {
               const percentage =
                 totalInvestment === 0
                   ? 0
-                  : (totalAmount / totalInvestment) * 100
+                  : (group.totalAmount / totalInvestment) * 100
               return {
-                groupName,
-                totalAmount,
+                ...group,
                 percentage: parseFloat(percentage.toFixed(2)),
               }
             }

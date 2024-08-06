@@ -16,6 +16,7 @@ interface InvestmentPlansSummary {
   riskLevel: string
   minimumInvestmentAmount: number
   liquidity: string
+  maturityDate: Date
 }
 
 interface InvestmentListProps {
@@ -32,7 +33,7 @@ export function InvestmentList({
   >(null)
 
   return (
-    <div className="w-full pt-2">
+    <div className="w-full pb-4 pt-2">
       <h2 className="mb-2 px-4 text-xl font-bold">{title}</h2>
 
       <div className="relative">

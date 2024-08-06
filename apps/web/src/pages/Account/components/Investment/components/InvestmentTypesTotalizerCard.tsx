@@ -19,7 +19,8 @@ import {
 import { formatBRL } from '@/lib/utils'
 
 interface InvestmentGroup {
-  groupName: string
+  id: string
+  name: string
   totalAmount: number
   percentage: number
 }
@@ -57,7 +58,7 @@ export function InvestmentTypesTotalizerCard({
   const HOVER_COLORS = ['#005F9E', '#007A6E', '#CC8A00', '#CC5A00']
 
   return (
-    <Card className=" col-span-3 flex-1 lg:col-span-2">
+    <Card className="col-span-3 flex-1 xl:col-span-2">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
           Investimentos
@@ -99,7 +100,7 @@ export function InvestmentTypesTotalizerCard({
                           : COLORS[index % COLORS.length]
                       }
                       onClick={() =>
-                        onSelectInvestmentType(investmentGroup.groupName)
+                        onSelectInvestmentType(investmentGroup.name)
                       }
                       onMouseEnter={() => setActiveIndex(index)}
                       onMouseLeave={() => setActiveIndex(null)}
@@ -116,15 +117,13 @@ export function InvestmentTypesTotalizerCard({
                 <div
                   key={`legend-${index}`}
                   className="mb-2 flex cursor-pointer items-center transition-all hover:text-zinc-500"
-                  onClick={() =>
-                    onSelectInvestmentType(investmentGroup.groupName)
-                  }
+                  onClick={() => onSelectInvestmentType(investmentGroup.name)}
                 >
                   <div
                     className="mr-2 h-3 w-3"
                     style={{ backgroundColor: COLORS[index % COLORS.length] }}
                   ></div>
-                  <span>{investmentGroup.groupName}</span>
+                  <span>{investmentGroup.name}</span>
                 </div>
               ))}
             </div>

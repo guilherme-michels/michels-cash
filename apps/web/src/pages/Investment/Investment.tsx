@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import { Breadcrumb } from '@/components/breadcrumb'
-import { Button } from '@/components/ui/button'
 import { SidebarTemplate } from '@/template/SidebarTemplate'
 
 import { InvestmentFilter } from './components/InvestmentFilter'
@@ -24,11 +23,11 @@ export function Investment() {
 
         <div className="flex flex-col gap-4">
           <div className="flex w-full items-center justify-between">
-            <InvestmentFilter />
-
-            <Button onClick={() => setIsInvestmentPlanFormModalOpen(true)}>
-              Adicionar plano de investimento
-            </Button>
+            <InvestmentFilter
+              setIsInvestmentPlanFormModalOpen={
+                setIsInvestmentPlanFormModalOpen
+              }
+            />
           </div>
 
           <Investments />

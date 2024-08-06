@@ -8,7 +8,7 @@ export function InvestmentDetailsTabs({
   onChange,
 }: InvestmentDetailsTabsProps) {
   return (
-    <Tabs defaultValue="all" className="w-[400px]">
+    <Tabs defaultValue="all">
       <TabsList>
         <TabsTrigger value="all" onClick={() => onChange('all')}>
           Tudo

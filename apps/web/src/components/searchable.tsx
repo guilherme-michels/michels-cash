@@ -4,7 +4,7 @@ import { Input } from './ui/input'
 
 export function Searchable() {
   return (
-    <div className="relative min-w-[500px]">
+    <div className="relative min-w-[300px] lg:min-w-[500px]">
       <span className="absolute inset-y-0 left-0 z-10 flex items-center px-2">
         <Search className="text-zinc-500" />
       </span>

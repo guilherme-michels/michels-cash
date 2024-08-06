@@ -21,7 +21,8 @@ export function createInvestment(investment: InvestmentData): Promise<{
 export function getInvestmentsSummary(): Promise<{
   totalInvestment: number
   investmentGroups: {
-    groupName: string
+    id: string
+    name: string
     totalAmount: number
     percentage: number
   }[]
@@ -30,10 +31,21 @@ export function getInvestmentsSummary(): Promise<{
     .get<{
       totalInvestment: number
       investmentGroups: {
-        groupName: string
+        id: string
+        name: string
         totalAmount: number
         percentage: number
       }[]
     }>('/investments/summary')
+    .then((res) => res.data)
+}
+
+export function getInvestmentsByGroupId(groupId: string): Promise<{
+  investments: { id: string; name: string; description: string }[]
+}> {
+  return api
+    .get<{
+      investments: { id: string; name: string; description: string }[]
+    }>(`/investments/group/${groupId}`)
     .then((res) => res.data)
 }
