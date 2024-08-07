@@ -38,7 +38,7 @@ export function DepositsAndWithdrawalsChart() {
     <Card className="flex-1">
       <CardHeader>
         <CardTitle className="flex items-center justify-between">
-          <span>Entradas e saídas</span>
+          <span className="text-base">Entradas e saídas</span>
           <Link
             to="/investments"
             className="text-sm transition-all hover:text-zinc-700"
@@ -48,14 +48,13 @@ export function DepositsAndWithdrawalsChart() {
         </CardTitle>
       </CardHeader>
 
-      <CardContent className="flex size-full items-center">
+      <CardContent className="flex size-full h-[360px] items-center">
         <ChartContainer config={chartConfig} className="h-full w-full">
           <BarChart data={chartData} width={500} height={250}>
             <CartesianGrid vertical={false} />
             <XAxis
               dataKey="month"
               tickLine={false}
-              tickMargin={10}
               axisLine={false}
               tickFormatter={(value) => value.slice(0, 3)}
             />

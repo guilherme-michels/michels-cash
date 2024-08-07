@@ -13,11 +13,13 @@ import {
 
 import { errorHandler } from './error-handler'
 import { registerAuthRoutes } from './routes/auth/_auth.routes'
+import { registerFinancialPlanningRoutes } from './routes/financial-planning/_financial-planning.routes'
 import { registerInvestmentGroupsRoutes } from './routes/investment-groups/_investment-groups.routes'
 import { registerInvestmentPlansRoutes } from './routes/investment-plans/_investment-plans.routes'
 import { registerInvestmentsRoutes } from './routes/investments/_investments.routes'
 import { registerInviteRoutes } from './routes/invites/_invites.routes'
 import { registerMembersRoutes } from './routes/members/_member.routes'
+import { registerNotificationsRoutes } from './routes/notifications/_notifications.routes'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -67,6 +69,8 @@ registerMembersRoutes(app)
 registerInvestmentPlansRoutes(app)
 registerInvestmentsRoutes(app)
 registerInvestmentGroupsRoutes(app)
+registerNotificationsRoutes(app)
+registerFinancialPlanningRoutes(app)
 
 const serverPort = process.env.SERVER_PORT
 if (!serverPort) {

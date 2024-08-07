@@ -41,11 +41,11 @@ export function getInvestmentsSummary(): Promise<{
 }
 
 export function getInvestmentsByGroupId(groupId: string): Promise<{
-  investments: { id: string; name: string; description: string }[]
+  investments: InvestmentData[]
 }> {
   return api
     .get<{
-      investments: { id: string; name: string; description: string }[]
+      investments: InvestmentData[]
     }>(`/investments/group/${groupId}`)
     .then((res) => res.data)
 }

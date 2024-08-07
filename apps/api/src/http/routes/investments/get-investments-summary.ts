@@ -39,8 +39,6 @@ export async function getUserInvestmentsSummary(app: FastifyInstance) {
         try {
           const userId = await request.getCurrentUserId()
 
-          console.log('User ID:', userId)
-
           const investments = await prisma.investment.findMany({
             where: { ownerId: userId },
             include: {

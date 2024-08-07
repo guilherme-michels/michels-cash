@@ -89,7 +89,7 @@ export function InvestmentFormModal({
     <Dialog open={isOpened} onOpenChange={onClose}>
       <DialogContent className="max-w-7xl">
         <DialogHeader>
-          <DialogTitle>Adicionar Investimento</DialogTitle>
+          <DialogTitle>Aplicar investimento</DialogTitle>
           <DialogDescription>Adicione um novo investimento</DialogDescription>
         </DialogHeader>
 
@@ -101,7 +101,7 @@ export function InvestmentFormModal({
           className="flex w-full flex-col gap-4"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="grid w-full grid-cols-2 gap-4">
+          <div className="grid w-full grid-cols-1 gap-4">
             <div className="flex w-full flex-col gap-4">
               <FormInput
                 control={control}
@@ -122,7 +122,7 @@ export function InvestmentFormModal({
               className="h-12 bg-emerald-800 text-base hover:bg-emerald-700"
               type="submit"
             >
-              Adicionar
+              Aplicar
             </Button>
           </DialogFooter>
         </form>

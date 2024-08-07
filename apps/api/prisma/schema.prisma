@@ -70,6 +70,7 @@ model InvestmentGroup {
   id          String             @id @default(uuid())
   name        String
   type        InvestmentType
+  color       String             // New field to store color
   createdAt   DateTime           @default(now()) @map("created_at")
   updatedAt   DateTime           @updatedAt @map("updated_at")
 

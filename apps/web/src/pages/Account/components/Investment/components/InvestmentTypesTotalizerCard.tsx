@@ -33,7 +33,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
     const { payload: data } = payload[0]
     return (
       <div className="custom-tooltip rounded border bg-white p-2 shadow-md">
-        <p className="label">{`${data.groupName} : ${data.percentage}%`}</p>
+        <p className="label">{`${data.name} : ${data.percentage}%`}</p>
       </div>
     )
   }
@@ -41,7 +41,7 @@ const CustomTooltip: React.FC<TooltipProps<number, string>> = ({
 }
 
 interface InvestmentTypesTotalizerCardProps {
-  onSelectInvestmentType: (value: string) => void
+  onSelectInvestmentType: (group: { id: string; name: string }) => void
   totalInvestment: number
   investmentGroups: InvestmentGroup[]
   isLoading: boolean
@@ -89,7 +89,7 @@ export function InvestmentTypesTotalizerCard({
                   fill="#8884d8"
                   paddingAngle={5}
                   dataKey="percentage"
-                  nameKey="groupName"
+                  nameKey="name"
                 >
                   {investmentGroups.map((investmentGroup, index) => (
                     <Cell
@@ -100,7 +100,10 @@ export function InvestmentTypesTotalizerCard({
                           : COLORS[index % COLORS.length]
                       }
                       onClick={() =>
-                        onSelectInvestmentType(investmentGroup.name)
+                        onSelectInvestmentType({
+                          id: investmentGroup.id,
+                          name: investmentGroup.name,
+                        })
                       }
                       onMouseEnter={() => setActiveIndex(index)}
                       onMouseLeave={() => setActiveIndex(null)}
@@ -117,7 +120,12 @@ export function InvestmentTypesTotalizerCard({
                 <div
                   key={`legend-${index}`}
                   className="mb-2 flex cursor-pointer items-center transition-all hover:text-zinc-500"
-                  onClick={() => onSelectInvestmentType(investmentGroup.name)}
+                  onClick={() =>
+                    onSelectInvestmentType({
+                      id: investmentGroup.id,
+                      name: investmentGroup.name,
+                    })
+                  }
                 >
                   <div
                     className="mr-2 h-3 w-3"

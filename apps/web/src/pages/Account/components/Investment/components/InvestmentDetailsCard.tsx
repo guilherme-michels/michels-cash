@@ -17,10 +17,13 @@ import { InvestmentDetailsMovimentationDate } from './InvestmentDetailsMovimenta
 import { InvestmentDetailsTabs } from './InvestmentDetailsTabs'
 
 interface InvestmentDetailsCardProps {
-  groupId: string
+  group: {
+    id: string
+    name: string
+  }
 }
 
-export function InvestmentDetailsCard({ groupId }: InvestmentDetailsCardProps) {
+export function InvestmentDetailsCard({ group }: InvestmentDetailsCardProps) {
   const [investmentView, setInvestmentView] = useState<string | null>(null)
 
   const {
@@ -29,8 +32,8 @@ export function InvestmentDetailsCard({ groupId }: InvestmentDetailsCardProps) {
     isError,
     error,
   } = useQuery({
-    queryKey: ['investmentDetails', groupId],
-    queryFn: () => getInvestmentsByGroupId(groupId!),
+    queryKey: ['investmentDetails', group.id],
+    queryFn: () => getInvestmentsByGroupId(group.id),
   })
 
   return (
@@ -38,17 +41,14 @@ export function InvestmentDetailsCard({ groupId }: InvestmentDetailsCardProps) {
       <CardHeader>
         <CardTitle>
           <strong className="cursor-pointer font-semibold hover:text-zinc-700">
-            teste
+            {group.name}
           </strong>
         </CardTitle>
         <CardDescription className="h-6 w-full">
           {isLoading ? (
             <Skeleton className="h-full w-full" />
-          ) : investmentData ? (
-            investmentData.investments[0]?.description ||
-            'No description available'
           ) : (
-            'Failed to load description'
+            <span>Investimentos presentes no grupo {group.name}</span>
           )}
         </CardDescription>
       </CardHeader>
@@ -75,7 +75,7 @@ export function InvestmentDetailsCard({ groupId }: InvestmentDetailsCardProps) {
               investmentData.investments.map((investment) => (
                 <InvestmentDetailsItem
                   key={investment.id}
-                  investmentId={investment.id}
+                  investment={investment}
                 />
               ))
             ) : (

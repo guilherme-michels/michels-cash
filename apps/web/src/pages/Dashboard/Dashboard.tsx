@@ -2,6 +2,9 @@ import { Breadcrumb } from '@/components/breadcrumb'
 import { SidebarTemplate } from '@/template/SidebarTemplate'
 
 import { DepositsAndWithdrawalsChart } from './components/DepositsAndWithdrawalsCard'
+import { InvestmentChart } from './components/InvestmentsChart'
+import { InvestmentsGroupsChart } from './components/InvestmentsGroupsChart'
+import { Swap } from './components/Swap/Swap'
 
 export function Dashboard() {
   const options = [
@@ -14,8 +17,14 @@ export function Dashboard() {
         <Breadcrumb options={options} />
 
         <div className="flex flex-col gap-4">
-          <div className="grid grid-cols-3 gap-4">
+          <Swap />
+
+          <div className="grid size-full grid-cols-1 gap-4 xl:grid-cols-3">
             <DepositsAndWithdrawalsChart />
+
+            <InvestmentChart />
+
+            <InvestmentsGroupsChart />
           </div>
         </div>
       </div>

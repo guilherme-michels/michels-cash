@@ -56,7 +56,7 @@ export function InvestmentFilter({
   }, [searchParams])
 
   return (
-    <div className="flex w-full flex-col  gap-4 lg:flex-row">
+    <div className="flex w-full flex-col gap-4 lg:flex-row">
       <div className="flex items-center justify-start gap-4">
         <Searchable />
 

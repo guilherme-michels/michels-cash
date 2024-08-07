@@ -2,41 +2,33 @@ import { ReactNode } from 'react'
 
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { cn } from '@/lib/utils'
 
-interface AccountHeaderCardProps {
+interface InvestmentHeaderCardProps {
   title: string
   description: string
   icon: ReactNode
-  onSelect: () => void
-  selected: boolean
 }
 
-export function AccountHeaderCard({
+export function InvestmentHeaderCard({
   description,
   title,
   icon,
-  onSelect,
-  selected,
-}: AccountHeaderCardProps) {
+}: InvestmentHeaderCardProps) {
   return (
-    <Card
-      onClick={onSelect}
-      className={cn('flex-1 cursor-pointer border-[1px] transition-all', {
-        'border-emerald-700 ': selected,
-      })}
-    >
-      <CardHeader>
+    <Card className={'flex-1 border-[1px]'}>
+      <CardHeader className="pb-0">
         <CardTitle className="flex items-center gap-2">
           {icon}
           {title}
         </CardTitle>
         <CardDescription>{description}</CardDescription>
       </CardHeader>
+      <CardContent className="flex w-full items-end justify-end gap-2 pt-0"></CardContent>
     </Card>
   )
 }

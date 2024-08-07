@@ -57,7 +57,7 @@ export function Investments() {
   }
 
   return (
-    <div className="flex max-h-[70vh] flex-col overflow-y-auto overflow-x-hidden">
+    <div className="flex flex-col overflow-y-auto overflow-x-hidden">
       <div className="flex h-8 items-center">
         <span
           className={`ml-1 text-xs text-zinc-500 ${formattedFilters.type || formattedFilters.risk ? 'visible' : 'invisible'}`}

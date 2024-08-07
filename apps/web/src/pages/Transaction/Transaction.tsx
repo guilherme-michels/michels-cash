@@ -25,6 +25,7 @@ export function Transaction() {
     <SidebarTemplate>
       <div className="p-4">
         <Breadcrumb options={options} />
+
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-2 gap-4 xl:grid-cols-4">
             <TransactionHeaderCard
