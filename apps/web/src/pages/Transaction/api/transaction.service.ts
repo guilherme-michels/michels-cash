@@ -1,11 +1,10 @@
-import { PageOptions } from '@/interfaces/pageOptions'
-
+import { pageOptions } from '@/interfaces/pageOptions'
 import { TransactionData } from '@/pages/Transaction/schemas/transactionSchema'
 
 export function getFakeTransactions(): Promise<{
   message: string
   transaction: TransactionData[]
-  pageOptions: PageOptions
+  pageOptions: pageOptions
 }> {
   const transaction = [{ id: '1', name: 'Particular' }]
 

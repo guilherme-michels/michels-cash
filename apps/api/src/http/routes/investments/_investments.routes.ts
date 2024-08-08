@@ -5,6 +5,7 @@ import { deleteInvestment } from './delete-investment'
 import { getInvestment } from './get-investment'
 import { getUserInvestments } from './get-investments'
 import { getUserInvestmentsByGroupId } from './get-investments-by-group'
+import { getInvestmentsMovimentationByGroupId } from './get-investments-movimentation'
 import { getUserInvestmentsSummary } from './get-investments-summary'
 import { updateInvestment } from './update-investment'
 
@@ -16,4 +17,5 @@ export async function registerInvestmentsRoutes(app: FastifyInstance) {
   await app.register(deleteInvestment)
   await app.register(getUserInvestmentsSummary)
   await app.register(getUserInvestmentsByGroupId)
+  await app.register(getInvestmentsMovimentationByGroupId)
 }

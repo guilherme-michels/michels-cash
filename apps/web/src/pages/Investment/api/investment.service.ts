@@ -1,5 +1,6 @@
 import { api } from '@/index'
 
+import { InvestmentMovimentationData } from '../schemas/investmentMovimentationSchema'
 import { InvestmentData } from '../schemas/investmentSchema'
 
 export function getInvestment(investmentId: string): Promise<{
@@ -47,5 +48,22 @@ export function getInvestmentsByGroupId(groupId: string): Promise<{
     .get<{
       investments: InvestmentData[]
     }>(`/investments/group/${groupId}`)
+    .then((res) => res.data)
+}
+
+export function getInvestmentsMovimentationByGroupId(
+  groupId: string,
+  rangeDays: string
+): Promise<{
+  movimentations: InvestmentMovimentationData[]
+}> {
+  return api
+    .get<{
+      movimentations: InvestmentMovimentationData[]
+    }>(`/investments-movimentation/group/${groupId}`, {
+      params: {
+        rangeDays,
+      },
+    })
     .then((res) => res.data)
 }

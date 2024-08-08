@@ -13,68 +13,51 @@ export function TransactionTable() {
   const [selectedTransaction, setSelectedTransaction] =
     useState<TransactionData | null>(null)
 
-  const [totalPages, setTotalPages] = useState<number | null>(1)
-  const [pageIndex, setPageIndex] = useState<number>(1)
+  const pageIndex = Number(searchParams.get('page')) || 1
+  const [totalPages, setTotalPages] = useState<number | null>(null)
 
-  const { data: transactionData, refetch } = useQuery({
-    queryKey: [
-      'transaction',
-      { page: Number(searchParams.get('page')) || 1, limit: 10 },
-    ],
+  const { data: transactionData, isLoading } = useQuery({
+    queryKey: ['transaction', { page: pageIndex, limit: 10 }],
     queryFn: () => getFakeTransactions(),
   })
 
   useEffect(() => {
     if (transactionData) {
-      setTotalPages(transactionData.pageOptions.lastPage!)
-      const page = Number(searchParams.get('page')) || 1
-      setPageIndex(page)
+      setTotalPages(transactionData.pageOptions.lastPage || 1)
     }
-  }, [transactionData, searchParams])
+  }, [transactionData])
 
   const handlePageChange = (newPageIndex: number) => {
     const params = new URLSearchParams(searchParams)
     params.set('page', newPageIndex.toString())
-    setSearchParams(params.toString())
+    setSearchParams(params)
   }
 
   const columns: ColumnDef<TransactionData>[] = [
     {
+      accessorKey: 'name',
       header: 'Tipo',
-      meta: 'Client',
-      enableHiding: false,
-      cell: () => {
-        return <div>teste</div>
-      },
+      cell: (info) => <div>a</div>,
     },
     {
       accessorKey: 'value',
       header: 'Valor',
-      meta: 'Valor',
-      enableHiding: false,
+      cell: (info) => <div>a</div>,
     },
     {
       id: 'actions',
       header: 'Ações',
-      meta: 'Ações',
-      cell: ({ row }) => {
-        // const patient = row.original as DepositData
-        return (
-          <div>a</div>
-          // <DropDownTable
-          //   onDelete={() => {
-          //     setSelectedDeposit(patient)
-          //     setIsDeleteModalVisible(true)
-          //   }}
-          //   onEdit={() => {
-          //     setSelectedDeposit(patient)
-          //     setIsPatientFormModalVisible(true)
-          //   }}
-          // />
-        )
-      },
+      cell: ({ row }) => (
+        <div>
+          <button onClick={() => setSelectedTransaction(row.original)}>
+            Ações
+          </button>
+        </div>
+      ),
     },
   ]
+
+  if (isLoading) return <div>Carregando...</div>
 
   return (
     <DataTable
@@ -82,20 +65,18 @@ export function TransactionTable() {
       data={transactionData?.transaction || []}
       dateFilter={false}
       pageIndex={pageIndex}
-      totalPages={totalPages}
+      totalPages={totalPages || 1}
       onPageChange={handlePageChange}
       canFilterColumns={false}
       columnToSearch="name"
-      // getRowProps={(row) => ({
-      //   onClick: () => {
-      //     onChangeSelectedInfo(row)
-      //     setSelectedPatient(row)
-      //   },
-      //   style: {
-      //     cursor: 'pointer',
-      //     backgroundColor: selectedPatient?.id === row.id ? '#f0f0f0' : 'white',
-      //   },
-      // })}
+      getRowProps={(row) => ({
+        onClick: () => setSelectedTransaction(row),
+        style: {
+          cursor: 'pointer',
+          backgroundColor:
+            selectedTransaction?.id === row.id ? '#f0f0f0' : 'white',
+        },
+      })}
     />
   )
 }

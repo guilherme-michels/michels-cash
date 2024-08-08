@@ -33,9 +33,6 @@ export async function getUserInvestmentsSummary(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
-        console.log('Request Headers:', request.headers)
-        console.log('Request Body:', request.body)
-
         try {
           const userId = await request.getCurrentUserId()
 
@@ -49,8 +46,6 @@ export async function getUserInvestmentsSummary(app: FastifyInstance) {
               },
             },
           })
-
-          console.log('Investments:', investments)
 
           if (investments.length === 0) {
             return { totalInvestment: 0, investmentGroups: [] }

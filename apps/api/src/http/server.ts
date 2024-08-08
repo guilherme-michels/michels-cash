@@ -20,6 +20,7 @@ import { registerInvestmentsRoutes } from './routes/investments/_investments.rou
 import { registerInviteRoutes } from './routes/invites/_invites.routes'
 import { registerMembersRoutes } from './routes/members/_member.routes'
 import { registerNotificationsRoutes } from './routes/notifications/_notifications.routes'
+import { registerTransactionsRoutes } from './routes/transactions/_transactions.routes'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -71,6 +72,7 @@ registerInvestmentsRoutes(app)
 registerInvestmentGroupsRoutes(app)
 registerNotificationsRoutes(app)
 registerFinancialPlanningRoutes(app)
+registerTransactionsRoutes(app)
 
 const serverPort = process.env.SERVER_PORT
 if (!serverPort) {
