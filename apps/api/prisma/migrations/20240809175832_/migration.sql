@@ -49,6 +49,7 @@ CREATE TABLE "investment_groups" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "type" "InvestmentType" NOT NULL,
+    "color" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -97,7 +98,7 @@ CREATE TABLE "transactions" (
     "description" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "sender_id" TEXT NOT NULL,
-    "recipient_id" TEXT NOT NULL,
+    "recipient_id" TEXT,
 
     CONSTRAINT "transactions_pkey" PRIMARY KEY ("id")
 );

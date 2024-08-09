@@ -75,7 +75,7 @@ export function InvestmentTypesTotalizerCard({
             : `Totalizador de investimentos ${formatBRL(totalInvestment)}`}
         </CardDescription>
       </CardHeader>
-      {!isLoading && (
+      {!isLoading && investmentGroups.length > 0 ? (
         <CardContent className="flex items-center justify-center space-x-4">
           <div className="flex size-full flex-col">
             <ResponsiveContainer width="100%" height={400}>
@@ -115,7 +115,7 @@ export function InvestmentTypesTotalizerCard({
               </PieChart>
             </ResponsiveContainer>
 
-            <div className="grid grid-cols-3 justify-items-center">
+            <div className="grid h-[50px] grid-cols-3 justify-items-center">
               {investmentGroups.map((investmentGroup, index) => (
                 <div
                   key={`legend-${index}`}
@@ -130,13 +130,19 @@ export function InvestmentTypesTotalizerCard({
                   <div
                     className="mr-2 h-3 w-3"
                     style={{ backgroundColor: COLORS[index % COLORS.length] }}
-                  ></div>
+                  />
                   <span>{investmentGroup.name}</span>
                 </div>
               ))}
             </div>
           </div>
         </CardContent>
+      ) : (
+        !isLoading && (
+          <CardContent className="flex h-[450px] w-full items-center justify-center text-zinc-500">
+            Nenhum investimento encontrado
+          </CardContent>
+        )
       )}
     </Card>
   )

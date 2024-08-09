@@ -89,23 +89,31 @@ export function Investments() {
       {loading ? (
         <Skeleton className="flex h-[70vh] w-full items-center justify-center bg-zinc-50" />
       ) : (
-        investmentGroups.map((group) => (
-          <InvestmentList
-            key={group.id}
-            title={group.name}
-            investmentPlans={
-              group.investmentPlans?.map((plan: InvestmentPlanData) => ({
-                liquidity: formatDate(plan.liquidity, 'dd/MM/yyyy'),
-                minimumInvestmentAmount: plan.minimumInvestmentAmount!,
-                maturityDate: plan.maturityDate,
-                riskLevel: plan.riskLevel,
-                name: plan.name,
-                description: plan.description,
-                id: plan.id || '',
-              })) || []
-            }
-          />
-        ))
+        <>
+          {investmentGroups.length === 0 ? (
+            <div className="flex h-[70vh] w-full items-center justify-center text-zinc-500">
+              Nenhum resultado encontrado
+            </div>
+          ) : (
+            investmentGroups.map((group) => (
+              <InvestmentList
+                key={group.id}
+                title={group.name}
+                investmentPlans={
+                  group.investmentPlans?.map((plan: InvestmentPlanData) => ({
+                    liquidity: formatDate(plan.liquidity, 'dd/MM/yyyy'),
+                    minimumInvestmentAmount: plan.minimumInvestmentAmount!,
+                    maturityDate: plan.maturityDate,
+                    riskLevel: plan.riskLevel,
+                    name: plan.name,
+                    description: plan.description,
+                    id: plan.id || '',
+                  })) || []
+                }
+              />
+            ))
+          )}
+        </>
       )}
     </div>
   )

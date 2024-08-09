@@ -8,23 +8,29 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(uuid())
-  name         String?
-  email        String   @unique
-  passwordHash String?  @map("password_hash")
-  avatarUrl    String?  @map("avatar_url")
-  createdAt    DateTime @default(now()) @map("created_at")
-  updatedAt    DateTime @updatedAt @map("updated_at")
+  id                String      @id @default(uuid())
+  name              String?
+  email             String      @unique
+  passwordHash      String?     @map("password_hash")
+  avatarUrl         String?     @map("avatar_url")
+  cpf               String?     @unique
+  phoneNumber       String?     @unique @map("phone_number")
+  age               Int?
+  birthDate         DateTime?   
+  keys              String[]    @default([]) 
+  createdAt         DateTime    @default(now()) @map("created_at")
+  updatedAt         DateTime    @updatedAt @map("updated_at")
 
-  tokens       Token[]
-  invites      Invite[]
-  investments  Investment[]
+  tokens            Token[]
+  invites           Invite[]
+  investments       Investment[]
 
   sentTransactions      Transaction[] @relation("sentTransactions")
   receivedTransactions  Transaction[] @relation("receivedTransactions")
 
   @@map("users")
 }
+
 
 enum TokenType {
   PASSWORD_RECOVER
@@ -70,7 +76,7 @@ model InvestmentGroup {
   id          String             @id @default(uuid())
   name        String
   type        InvestmentType
-  // color       String           
+  color       String           
   createdAt   DateTime           @default(now()) @map("created_at")
   updatedAt   DateTime           @updatedAt @map("updated_at")
 
@@ -136,8 +142,9 @@ model Transaction {
   sender            User     @relation("sentTransactions", fields: [senderId], references: [id], onDelete: Cascade)
   senderId          String   @map("sender_id")
   
-  recipient         User     @relation("receivedTransactions", fields: [recipientId], references: [id], onDelete: Cascade)
-  recipientId       String   @map("recipient_id")
+  recipient         User?    @relation("receivedTransactions", fields: [recipientId], references: [id], onDelete: Cascade)
+  recipientId       String?  @map("recipient_id")
 
   @@map("transactions")
 }
+
