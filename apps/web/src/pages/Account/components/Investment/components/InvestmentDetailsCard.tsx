@@ -15,7 +15,7 @@ import { getInvestmentsByGroupId } from '@/pages/Investment/api/investment.servi
 import { InvestmentDetailsItem } from './InvestmentDetailsItem'
 import { InvestmentDetailsMovimentationDate } from './InvestmentDetailsMovimentationDate'
 import { InvestmentDetailsTabs } from './InvestmentDetailsTabs'
-import { InvestmentMovimentation } from './InvestmentMovimentation'
+import { InvestmentMovimentationTable } from './InvestmentMovimentationTable'
 
 interface InvestmentDetailsCardProps {
   group: {
@@ -71,7 +71,7 @@ export function InvestmentDetailsCard({ group }: InvestmentDetailsCardProps) {
             Failed to load investments: {error.message}
           </div>
         ) : investmentView === 'movimentation' ? (
-          <InvestmentMovimentation groupId={group.id} />
+          <InvestmentMovimentationTable groupId={group.id} />
         ) : (
           <Accordion type="single" collapsible>
             {investmentData?.investments.length ? (

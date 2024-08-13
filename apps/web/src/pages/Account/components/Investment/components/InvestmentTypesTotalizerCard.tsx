@@ -70,9 +70,13 @@ export function InvestmentTypesTotalizerCard({
           </Link>
         </CardTitle>
         <CardDescription>
-          {isLoading
-            ? 'Carregando...'
-            : `Totalizador de investimentos ${formatBRL(totalInvestment)}`}
+          {isLoading ? (
+            'Carregando...'
+          ) : investmentGroups.length > 0 ? (
+            `Totalizador de investimentos ${formatBRL(totalInvestment)}`
+          ) : (
+            <span>Você não possui investimentos</span>
+          )}
         </CardDescription>
       </CardHeader>
       {!isLoading && investmentGroups.length > 0 ? (
@@ -139,8 +143,14 @@ export function InvestmentTypesTotalizerCard({
         </CardContent>
       ) : (
         !isLoading && (
-          <CardContent className="flex h-[450px] w-full items-center justify-center text-zinc-500">
-            Nenhum investimento encontrado
+          <CardContent className="flex h-[450px] w-full flex-col items-center justify-center text-zinc-500">
+            <span>Nenhum investimento encontrado</span>
+            <Link
+              to="/investments"
+              className="text-sm text-blue-500 underline transition-all hover:text-blue-600"
+            >
+              Conhecer investimentos
+            </Link>
           </CardContent>
         )
       )}

@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { ColumnDef } from '@tanstack/react-table'
 import { formatDate } from 'date-fns'
 import { useSearchParams } from 'react-router-dom'
@@ -8,13 +8,13 @@ import { formatBRL } from '@/lib/utils'
 import { getInvestmentsMovimentationByGroupId } from '@/pages/Investment/api/investment.service'
 import { InvestmentMovimentationData } from '@/pages/Investment/schemas/investmentMovimentationSchema'
 
-interface InvestmentMovimentationProps {
+interface InvestmentMovimentationTableProps {
   groupId: string
 }
 
-export function InvestmentMovimentation({
+export function InvestmentMovimentationTable({
   groupId,
-}: InvestmentMovimentationProps) {
+}: InvestmentMovimentationTableProps) {
   const [searchParams] = useSearchParams()
 
   const rangeDays = searchParams.get('rangeDays') || '7'
@@ -22,6 +22,7 @@ export function InvestmentMovimentation({
   const { data: investmentMovimentationData } = useQuery({
     queryKey: ['investmentMovimentation', groupId, rangeDays],
     queryFn: () => getInvestmentsMovimentationByGroupId(groupId, rangeDays),
+    placeholderData: keepPreviousData,
   })
 
   const columns: ColumnDef<InvestmentMovimentationData>[] = [

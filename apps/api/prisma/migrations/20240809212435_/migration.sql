@@ -17,6 +17,11 @@ CREATE TABLE "users" (
     "email" TEXT NOT NULL,
     "password_hash" TEXT,
     "avatar_url" TEXT,
+    "cpf" TEXT,
+    "phone_number" TEXT,
+    "age" INTEGER,
+    "birthDate" TIMESTAMP(3),
+    "keys" TEXT[] DEFAULT ARRAY[]::TEXT[],
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updated_at" TIMESTAMP(3) NOT NULL,
 
@@ -105,6 +110,12 @@ CREATE TABLE "transactions" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "users_email_key" ON "users"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_cpf_key" ON "users"("cpf");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "users_phone_number_key" ON "users"("phone_number");
 
 -- CreateIndex
 CREATE INDEX "invites_email_idx" ON "invites"("email");
