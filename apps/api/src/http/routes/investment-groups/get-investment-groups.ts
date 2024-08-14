@@ -33,6 +33,7 @@ export async function getInvestmentGroups(app: FastifyInstance) {
                 z.array(investmentRiskLevelEnum),
               ])
               .optional(),
+            search: z.string().optional(), // Novo parâmetro de pesquisa
           }),
           response: {
             200: z.object({
@@ -41,6 +42,7 @@ export async function getInvestmentGroups(app: FastifyInstance) {
                   id: z.string(),
                   name: z.string(),
                   type: investmentTypeEnum,
+                  color: z.string(),
                   investmentPlans: z
                     .array(
                       z.object({
@@ -67,11 +69,12 @@ export async function getInvestmentGroups(app: FastifyInstance) {
         },
       },
       async (request) => {
-        const { type, risk } = request.query as {
+        const { type, risk, search } = request.query as {
           type?: typeof investmentTypeEnum._type
           risk?:
             | typeof investmentRiskLevelEnum._type
             | (typeof investmentRiskLevelEnum._type)[]
+          search?: string
         }
 
         const riskLevels = Array.isArray(risk) ? risk : risk ? [risk] : []
@@ -79,6 +82,9 @@ export async function getInvestmentGroups(app: FastifyInstance) {
         const investmentGroups = await prisma.investmentGroup.findMany({
           where: {
             type: type || undefined,
+            name: search
+              ? { contains: search, mode: 'insensitive' }
+              : undefined,
             investmentPlans:
               riskLevels.length > 0
                 ? {
@@ -94,6 +100,7 @@ export async function getInvestmentGroups(app: FastifyInstance) {
             id: true,
             name: true,
             type: true,
+            color: true,
             createdAt: true,
             updatedAt: true,
             investmentPlans: {
@@ -115,6 +122,11 @@ export async function getInvestmentGroups(app: FastifyInstance) {
                   in: riskLevels.length > 0 ? riskLevels : undefined,
                 },
               },
+            },
+          },
+          orderBy: {
+            investmentPlans: {
+              _count: 'desc',
             },
           },
         })

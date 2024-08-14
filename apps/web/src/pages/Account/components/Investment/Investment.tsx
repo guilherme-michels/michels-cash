@@ -60,9 +60,7 @@ export function Investment() {
         }}
       />
 
-      {investmentGroupSelected && (
-        <InvestmentDetailsCard group={investmentGroupSelected} />
-      )}
+      <InvestmentDetailsCard group={investmentGroupSelected} />
     </div>
   )
 }

@@ -5,9 +5,11 @@ import { InvestmentGroupData } from '../schemas/investmentGroupSchema'
 export function getInvestmentGroups({
   type: typeFilter,
   risk: riskFilter,
+  search: stringFilter,
 }: {
   type?: string
   risk?: string[]
+  search?: string
 }): Promise<{
   investmentGroups: InvestmentGroupData[]
 }> {
@@ -19,6 +21,10 @@ export function getInvestmentGroups({
 
   if (riskFilter && riskFilter.length > 0) {
     riskFilter.forEach((risk) => params.append('risk', risk))
+  }
+
+  if (stringFilter) {
+    params.append('search', stringFilter)
   }
 
   return api

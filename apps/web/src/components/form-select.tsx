@@ -8,10 +8,13 @@ type FormSelectProps<T extends FieldValues> = SelectProps & {
   name: Path<T>
   label: string
   required: boolean
-  options: {
-    value: string
-    name: string
-  }[]
+  options:
+    | {
+        value: string
+        name: string
+      }[]
+    | null
+  isLoading?: boolean
 }
 
 export function FormSelect<T extends FieldValues>({

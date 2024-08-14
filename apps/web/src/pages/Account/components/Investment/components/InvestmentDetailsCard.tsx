@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 
+import emptyImg from '@/assets/empty.png'
 import { Accordion } from '@/components/ui/accordion'
 import {
   Card,
@@ -21,7 +22,7 @@ interface InvestmentDetailsCardProps {
   group: {
     id: string
     name: string
-  }
+  } | null
 }
 
 export function InvestmentDetailsCard({ group }: InvestmentDetailsCardProps) {
@@ -33,9 +34,24 @@ export function InvestmentDetailsCard({ group }: InvestmentDetailsCardProps) {
     isError,
     error,
   } = useQuery({
-    queryKey: ['investmentDetails', group.id],
-    queryFn: () => getInvestmentsByGroupId(group.id),
+    queryKey: ['investmentDetails', group?.id],
+    queryFn: () =>
+      group ? getInvestmentsByGroupId(group.id) : Promise.resolve(null),
+    enabled: !!group,
   })
+
+  if (!group) {
+    return (
+      <Card className="col-span-3">
+        <CardContent className="flex size-full flex-col items-center justify-center">
+          <img src={emptyImg} alt="empty" className="size-60" />
+          <p className="text-sm text-zinc-500">
+            Apenas com investimentos já cadastrados você pode ver suas métricas
+          </p>
+        </CardContent>
+      </Card>
+    )
+  }
 
   return (
     <Card className="col-span-3">
@@ -74,7 +90,7 @@ export function InvestmentDetailsCard({ group }: InvestmentDetailsCardProps) {
           <InvestmentMovimentationTable groupId={group.id} />
         ) : (
           <Accordion type="single" collapsible>
-            {investmentData?.investments.length ? (
+            {investmentData?.investments?.length ? (
               investmentData.investments.map((investment) => (
                 <InvestmentDetailsItem
                   key={investment.id}
@@ -82,7 +98,7 @@ export function InvestmentDetailsCard({ group }: InvestmentDetailsCardProps) {
                 />
               ))
             ) : (
-              <div>No investments available</div>
+              <div>Nenhum investimento disponível</div>
             )}
           </Accordion>
         )}

@@ -10,10 +10,12 @@ import {
 } from './ui/select'
 
 interface MultiselectProps {
-  options: {
-    value: string
-    name: string
-  }[]
+  options:
+    | {
+        value: string
+        name: string
+      }[]
+    | null
   label: string
   placeholder?: string
   disabled?: boolean
@@ -22,7 +24,6 @@ interface MultiselectProps {
   onChange: (value: string) => void
   error?: string | null
 }
-
 export function Multiselect({
   options,
   label,
@@ -73,7 +74,7 @@ export function Multiselect({
 
       <Select
         onValueChange={handleOptionChange}
-        disabled={disabled || options.length === 0}
+        disabled={disabled || options === null || options.length === 0}
         value={selectedOptions}
       >
         <SelectTrigger
@@ -84,14 +85,14 @@ export function Multiselect({
         >
           <SelectValue
             placeholder={
-              options.length === 0
-                ? 'Não existe nenhum dado cadastrado'
+              options === null || options.length === 0
+                ? 'Nenhum dado cadastrado'
                 : placeholder || 'Selecione uma opção'
             }
           />
         </SelectTrigger>
         <SelectContent>
-          {options.map((option) => (
+          {options?.map((option) => (
             <SelectItem
               key={option.value}
               value={option.value}

@@ -1,5 +1,5 @@
 import { ListFilter } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 
 import { Searchable } from '@/components/searchable'
@@ -27,6 +27,18 @@ export function InvestmentFilter({
   const [selectedRisks, setSelectedRisks] = useState<riskLevel[]>(() => {
     return searchParams.getAll('risk') as riskLevel[]
   })
+
+  const handleSearch = useCallback(
+    (query: string) => {
+      if (query) {
+        searchParams.set('search', query)
+      } else {
+        searchParams.delete('search')
+      }
+      setSearchParams(searchParams)
+    },
+    [searchParams, setSearchParams]
+  )
 
   const handleTypeFilter = (type: InvestmentType) => {
     searchParams.set('type', type)
@@ -58,7 +70,7 @@ export function InvestmentFilter({
   return (
     <div className="flex w-full flex-col gap-4 lg:flex-row">
       <div className="flex items-center justify-start gap-4">
-        <Searchable />
+        <Searchable onSearch={handleSearch} />
 
         <DropdownMenu>
           <DropdownMenuTrigger
@@ -122,10 +134,10 @@ export function InvestmentFilter({
         </div>
 
         <Button onClick={() => setIsInvestmentPlanFormModalOpen(true)}>
-          <span className="hidden lg:inline">
+          <span className="hidden xl:inline">
             Adicionar plano de investimento
           </span>
-          <span className="lg:hidden">+ Plano</span>
+          <span className="xl:hidden">+ Plano</span>
         </Button>
       </div>
     </div>

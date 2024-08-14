@@ -39,8 +39,8 @@ export function Investment() {
 
             <InvestmentHeaderCard
               icon={<CircleDollarSign color="#19850b" />}
-              description="Meu histórico"
-              title="Meu histórico"
+              description="Histórico de investimentos"
+              title="Histórico"
             />
           </div>
 

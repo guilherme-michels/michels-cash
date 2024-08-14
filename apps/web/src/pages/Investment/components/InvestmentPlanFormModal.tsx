@@ -1,7 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useEffect, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useForm } from 'react-hook-form'
 
 import { FormInput } from '@/components/form-input'
 import { FormSelect } from '@/components/form-select'
@@ -15,7 +14,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Slider } from '@/components/ui/slider'
 import { useToast } from '@/components/ui/use-toast'
 
 import { getInvestmentGroups } from '../api/investmentGroup.service'
@@ -25,6 +23,11 @@ import {
   InvestmentPlanData,
   investmentPlanSchema,
 } from '../schemas/investmentPlanSchema'
+import { Switch } from '@/components/ui/switch'
+import { Textarea } from '@/components/ui/textarea'
+import { Badge } from '@/components/ui/badge'
+import { useState } from 'react'
+import { riskLevel } from '@/interfaces/riskLevel'
 
 interface InvestmentPlanFormModalProps {
   isOpened: boolean
@@ -35,39 +38,29 @@ export function InvestmentPlanFormModal({
   isOpened,
   onClose,
 }: InvestmentPlanFormModalProps) {
-  const { reset, handleSubmit, control } = useForm<InvestmentPlanData>({
-    resolver: zodResolver(investmentPlanSchema),
-    defaultValues: {
-      interestRate: 0,
-    },
-  })
+  const [selectedRisk, setSelectedRisk] = useState<riskLevel | null>(null)
+
+  const { reset, handleSubmit, control, setValue } =
+    useForm<InvestmentPlanData>({
+      resolver: zodResolver(investmentPlanSchema),
+      defaultValues: {
+        interestRate: 0,
+      },
+    })
+
+  const handleRiskSelect = (risk: riskLevel) => {
+    setSelectedRisk(risk)
+    setValue('riskLevel', risk)
+  }
 
   const { toast } = useToast()
   const queryClient = useQueryClient()
-  const [investmentGroups, setInvestmentGroups] = useState<
-    { value: string; name: string }[]
-  >([])
 
-  useEffect(() => {
-    if (!isOpened) return
-
-    async function fetchInvestmentGroups() {
-      try {
-        const { investmentGroups } = await getInvestmentGroups()
-        const formattedGroups = investmentGroups.map(
-          (group: InvestmentGroupData) => ({
-            value: group.id!,
-            name: group.name,
-          })
-        )
-        setInvestmentGroups(formattedGroups)
-      } catch (error) {
-        toast({ title: 'Failed to fetch investment groups', status: 'error' })
-      }
-    }
-
-    fetchInvestmentGroups()
-  }, [isOpened, toast])
+  const { data: investmentGroupsData, isLoading: isLoadingGroups } = useQuery({
+    queryKey: ['investmentGroups'],
+    queryFn: () => getInvestmentGroups({}),
+    enabled: isOpened,
+  })
 
   const { mutateAsync: addInvestmentPlan } = useMutation({
     mutationFn: async (data: InvestmentPlanData) => {
@@ -94,11 +87,12 @@ export function InvestmentPlanFormModal({
   return (
     <Dialog open={isOpened} onOpenChange={onClose}>
       <DialogClose onClick={onClose} />
-      <DialogContent className="max-w-5xl">
+      <DialogContent className="max-w-6xl">
         <DialogHeader>
-          <DialogTitle>Adicionar</DialogTitle>
+          <DialogTitle>Adicionar plano de investimento</DialogTitle>
           <DialogDescription>
-            Adicione um novo plano de investimento
+            Preencha as informações abaixo para adicionar um novo plano de
+            investimento.
           </DialogDescription>
         </DialogHeader>
 
@@ -107,7 +101,7 @@ export function InvestmentPlanFormModal({
           onSubmit={handleSubmit(onSubmit)}
         >
           <div className="grid w-full grid-cols-2 gap-4">
-            <div className="flex w-full flex-col gap-4">
+            <div className="col-span-2 flex w-full items-center">
               <FormInput
                 control={control}
                 name="name"
@@ -116,7 +110,30 @@ export function InvestmentPlanFormModal({
                 placeholder="Informe o nome"
               />
 
-              <FormInput
+              <div className="ml-4 mt-6 flex items-center gap-4">
+                <Badge
+                  className={`cursor-pointer bg-green-700 hover:bg-green-600 ${selectedRisk === 'LOW' ? 'opacity-100' : 'opacity-50'}`}
+                  onClick={() => handleRiskSelect('LOW')}
+                >
+                  Conservador
+                </Badge>
+                <Badge
+                  className={`cursor-pointer bg-yellow-600 hover:bg-yellow-500 ${selectedRisk === 'MEDIUM' ? 'opacity-100' : 'opacity-50'}`}
+                  onClick={() => handleRiskSelect('MEDIUM')}
+                >
+                  Moderado
+                </Badge>
+                <Badge
+                  className={`cursor-pointer bg-red-700 hover:bg-red-600 ${selectedRisk === 'HIGH' ? 'opacity-100' : 'opacity-50'}`}
+                  onClick={() => handleRiskSelect('HIGH')}
+                >
+                  Arriscado
+                </Badge>
+              </div>
+            </div>
+
+            <div className="col-span-2 h-full">
+              <Textarea
                 control={control}
                 name="description"
                 label="Descrição"
@@ -125,35 +142,92 @@ export function InvestmentPlanFormModal({
               />
             </div>
 
-            <div className="flex w-full flex-col gap-4">
-              <FormSelect
-                options={investmentGroups}
+            <FormSelect
+              options={
+                investmentGroupsData?.investmentGroups?.map(
+                  (group: InvestmentGroupData) => ({
+                    value: group.id!,
+                    name: group.name,
+                  })
+                ) || null
+              }
+              control={control}
+              name="investmentGroupId"
+              label="Grupo de investimento"
+              required
+              isLoading={isLoadingGroups}
+            />
+
+            <FormInput
+              control={control}
+              name="minimumInvestmentAmount"
+              label="Investimento mínimo"
+              type="number"
+              placeholder="Informe o valor mínimo"
+              required
+            />
+
+            <div className="flex size-full items-center gap-2">
+              <Switch className="mt-6" />
+              <FormInput
                 control={control}
-                name="investmentGroupId"
-                label="Grupo de investimento"
+                name="maximumInvestmentAmount"
+                label="Investimento máximo"
+                type="number"
+                placeholder="Informe o valor máximo"
                 required
               />
+            </div>
 
-              <div className="mb-4 px-1 text-sm !text-zinc-950">Taxa</div>
-              <Controller
-                name="interestRate"
+            <FormInput
+              control={control}
+              name="duration"
+              label="Duração (em meses)"
+              type="number"
+              placeholder="Informe a duração"
+              required
+            />
+
+            <FormInput
+              control={control}
+              name="interestRate"
+              label="Taxa de juros"
+              type="number"
+              placeholder="Informe a taxa de juros"
+              required
+            />
+
+            <FormInput
+              control={control}
+              name="liquidity"
+              label="Liquidez"
+              type="date"
+              placeholder="Informe a data de liquidez"
+              required
+            />
+
+            <div className="flex size-full items-center gap-2">
+              <Switch className="mt-6" />
+              <FormSelect
+                options={[
+                  { value: '0', name: 'Perder ganhos' },
+                  { value: '1', name: 'Nenhuma penalidade' },
+                ]}
                 control={control}
-                render={({ field }) => (
-                  <>
-                    <Slider
-                      value={[field.value || 0]}
-                      onValueChange={(value) => field.onChange(value[0] || 0)}
-                      min={0}
-                      max={100}
-                      step={0.1}
-                    />
-                    <span className="mt-2 block text-sm text-gray-700">
-                      {field.value || 0}%
-                    </span>
-                  </>
-                )}
+                name="penaltyForEarlyWithdrawal"
+                label="Penalidade por retirada antecipada"
+                required
               />
             </div>
+
+            <FormInput
+              control={control}
+              name="maturityDate"
+              label="Data de vencimento"
+              type="date"
+              placeholder="Informe a data de vencimento"
+              required
+            />
           </div>
 
           <DialogFooter>
